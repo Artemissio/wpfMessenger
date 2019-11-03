@@ -36,6 +36,11 @@ namespace WpfMessenger.Repositories
             return _chat;
         }
 
+        public void AddChat(ChatModel chat)
+        {
+            _chats.Add(chat);
+        }
+
         public IEnumerable<ChatModel> GetChats()
         {
             return _chats;

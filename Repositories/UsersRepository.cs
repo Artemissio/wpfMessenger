@@ -49,5 +49,12 @@ namespace WpfMessenger.Repositories
         {
             return _users;
         }
+
+        public IEnumerable<UserModel> GetUsers(string value)
+        {
+            return _users.FindAll(u => u.Nickname.Contains(value)
+                                    || u.Name.Contains(value) 
+                                    || u.Surname.Contains(value));
+        }
     }
 }

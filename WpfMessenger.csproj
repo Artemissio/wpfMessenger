@@ -85,12 +85,6 @@
     <Compile Include="Views\ChatSettings.xaml.cs">
       <DependentUpon>ChatSettings.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\ContactInfoView.xaml.cs">
-      <DependentUpon>ContactInfoView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\ListOfContactsView.xaml.cs">
-      <DependentUpon>ListOfContactsView.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Views\ListOfUsers.xaml.cs">
       <DependentUpon>ListOfUsers.xaml</DependentUpon>
     </Compile>
@@ -102,9 +96,6 @@
     </Compile>
     <Compile Include="Views\NewChatView.xaml.cs">
       <DependentUpon>NewChatView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\NewContactView.xaml.cs">
-      <DependentUpon>NewContactView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\RegistrationView.xaml.cs">
       <DependentUpon>RegistrationView.xaml</DependentUpon>
@@ -137,7 +128,6 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <None Include="MessengerClassDiagram.cd" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -155,14 +145,6 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\ContactInfoView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\ListOfContactsView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Views\ListOfUsers.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -176,10 +158,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\NewChatView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\NewContactView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

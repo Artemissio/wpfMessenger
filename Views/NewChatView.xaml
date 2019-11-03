@@ -18,8 +18,15 @@
         <Label Margin="10,10,10,-0.333" Content="Add Chat" Style="{StaticResource Title}"/>
         <TextBox x:Name="tbChatName" Margin="117,41,10,0" />
         <Label Margin="10,40,0,0" Content="Chat Name" Style="{StaticResource Field}"/>
-        <TextBox x:Name="tbSearchContact" Margin="10,75,10,0"/>
-        <ListBox x:Name="ListOfContacts" Grid.Column="0" Margin="10,105,10,55" 
-                 Style="{StaticResource List}"/>
+        <TextBox x:Name="tbSearchContact" Margin="10,75,10,0" 
+                    TextChanged="TbSearchContact_TextChanged"/>
+        <ListBox x:Name="ListOfContacts" Grid.Column="0" Margin="10,105,10,55" SelectionMode="Multiple" 
+                 Style="{StaticResource List}" SelectionChanged="ListOfContacts_SelectionChanged">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <ListBoxItem Style="{StaticResource ListItem}" Content="{Binding Path=Nickname}"/>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
     </Grid>
 </Window>

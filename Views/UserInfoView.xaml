@@ -5,24 +5,20 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WpfMessenger.Views"
         mc:Ignorable="d"
-        Title="UserInfoView" Height="350" Width="350" ResizeMode="NoResize"
+        Title="UserInfoView" Height="270" Width="350" ResizeMode="NoResize"
         Background="#FF252424" FontFamily="Century Gothic" WindowStartupLocation="CenterScreen">
     <Grid>
         <Label Margin="10,10,0,0" Height="40" Content="{Binding Path=FullName}"
-               Style="{StaticResource Field}"/>
-        <Label Margin="10,55,0,0" Height="40" Content="{Binding Path=Number}"
-               Style="{StaticResource Field}"/>
+               Style="{StaticResource Field}" Width="325"/>
+        <Label Margin="10,50,0,0" Height="40" Content="{Binding Path=Number}"
+               Style="{StaticResource Field}" Width="325"/>
         <Button x:Name="btnBack" Background="Transparent" BorderBrush="Transparent"
-                Click="BtnBack_Click" Margin="10,254,272,10">
+                Click="BtnBack_Click" Margin="10,175,284.667,17" Width="50" Height="50">
             <Image Source="/Style/back.png" Height="50"/>
         </Button>
         <Button x:Name="btnNewChat" Content="New Chat" Margin="10,95,0,0"
-                Click="BtnNewChat_Click" Style="{StaticResource UserInfoBtn}"/>
-        <Button x:Name="btnNewContact" Content="New Contact" Margin="10,135,0,0" 
-                Click="BtnNewContact_Click" Style="{StaticResource UserInfoBtn}"/>
-        <Button x:Name="btnSettings" Content="Settings" Margin="10,175,0,0" 
-                Click="BtnSettings_Click" Style="{StaticResource UserInfoBtn}"/>
-        <Button x:Name="btnContacts" Content="Contacts" Margin="10,215,0,0" 
-                Click="BtnContacts_Click" Style="{StaticResource UserInfoBtn}"/>
+                Click="BtnNewChat_Click" Style="{StaticResource UserInfoBtn}" Width="325"/>
+        <Button x:Name="btnSettings" Content="Settings" Margin="10,135,0,0" 
+                Click="BtnSettings_Click" Style="{StaticResource UserInfoBtn}" Width="325"/>
     </Grid>
 </Window>

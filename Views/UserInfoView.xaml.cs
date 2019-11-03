@@ -36,12 +36,12 @@ namespace WpfMessenger.Views
             Close();
         }
 
-        private void BtnNewContact_Click(object sender, RoutedEventArgs e)
-        {
-            NewContactView newContactView = new NewContactView(_user);
-            newContactView.Show();
-            Close();
-        }
+        //private void BtnNewContact_Click(object sender, RoutedEventArgs e)
+        //{
+        //    NewContactView newContactView = new NewContactView(_user);
+        //    newContactView.Show();
+        //    Close();
+        //}
 
         private void BtnSettings_Click(object sender, RoutedEventArgs e)
         {
@@ -50,12 +50,12 @@ namespace WpfMessenger.Views
             Close();
         }
 
-        private void BtnContacts_Click(object sender, RoutedEventArgs e)
-        {
-            ListOfContactsView listOfContactsView = new ListOfContactsView(_user);
-            listOfContactsView.Show();
-            Close();
-        }
+        //private void BtnContacts_Click(object sender, RoutedEventArgs e)
+        //{
+        //    ListOfContactsView listOfContactsView = new ListOfContactsView(_user);
+        //    listOfContactsView.Show();
+        //    Close();
+        //}
 
         private void BtnBack_Click(object sender, RoutedEventArgs e)
         {
