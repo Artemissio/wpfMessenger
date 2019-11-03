@@ -1,0 +1,20 @@
+﻿WpfMessenger
+
+
+winexe
+C#
+.cs
+C:\Users\xiaomi\Documents\.NET Projects\WpfMessenger\obj\Debug\
+WpfMessenger
+none
+false
+DEBUG;TRACE
+C:\Users\xiaomi\Documents\.NET Projects\WpfMessenger\App.xaml
+131341817035
+
+38296701598
+141850378777
+Style\Styles.xaml;Views\ChatSettings.xaml;Views\ContactInfoView.xaml;Views\ListOfContactsView.xaml;Views\ListOfUsers.xaml;Views\LoginView.xaml;Views\MainView.xaml;Views\NewChatView.xaml;Views\NewContactView.xaml;Views\RegistrationView.xaml;Views\RestorePasswordView.xaml;Views\UserInfoView.xaml;Views\UserSettingsView.xaml;
+
+True
+

@@ -1,0 +1,18 @@
+﻿<Window x:Class="WpfMessenger.Views.UserSettingsView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WpfMessenger.Views"
+        mc:Ignorable="d"
+        Title="UserSettingsView" MinHeight="275" Height="275" MinWidth="325" Width="325"
+        Background="#FF333131" FontFamily="Century Gothic" WindowStartupLocation="CenterScreen">
+    <Grid>
+        <Label Margin="10,10,0,0" Content="Account" Style="{StaticResource Title}"/>
+        <TextBox x:Name="tbNumber" Margin="10,45,10,0"/>
+        <TextBox x:Name="tbNickname" Margin="10,95,10,0"/>
+        <TextBox x:Name="tbPassword" Margin="10,145,10,0"/>
+        <Button x:Name="btnAccept" Content="ACCEPT" Margin="112,191,112,20" 
+                Click="BtnAccept_Click" Template="{StaticResource AcceptButton}"/>
+    </Grid>
+</Window>

@@ -1,0 +1,326 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="WpfMessenger.Models.AdminModel">
+    <Position X="18" Y="4.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\AdminModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WpfMessenger.Models.ChatModel">
+    <Position X="21" Y="4" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAQQAAAAAAAAAAAAEAQAAAAA=</HashCode>
+      <FileName>Models\ChatModel.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Property Name="Members" />
+      <Property Name="Messages" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="WpfMessenger.Models.DeviceModel">
+    <Position X="13.5" Y="7.75" Width="3" />
+    <TypeIdentifier>
+      <HashCode>AAABAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAgAAAAAAA=</HashCode>
+      <FileName>Models\DeviceModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WpfMessenger.Models.DialogModel">
+    <Position X="30.5" Y="4" Width="1.5" />
+    <AssociationLine Name="Messages" Type="WpfMessenger.Models.MessageModel" FixedFromPoint="true">
+      <Path>
+        <Point X="30.5" Y="4.938" />
+        <Point X="29" Y="4.938" />
+      </Path>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAEAAAEAAAAAAAAAAAAAAAAAAAQAAAAA=</HashCode>
+      <FileName>Models\DialogModel.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Property Name="Messages" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="WpfMessenger.Models.MessageModel">
+    <Position X="27.5" Y="4" Width="1.5" />
+    <AssociationLine Name="Sender" Type="WpfMessenger.Models.UserModel" ManuallyRouted="true" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="27.875" Y="5.747" />
+        <Point X="27.875" Y="6.367" />
+        <Point X="27.875" Y="6.367" />
+        <Point X="27.875" Y="9.5" />
+      </Path>
+    </AssociationLine>
+    <AssociationLine Name="Recipient" Type="WpfMessenger.Models.UserModel" ManuallyRouted="true" FixedFromPoint="true">
+      <Path>
+        <Point X="28.75" Y="5.747" />
+        <Point X="28.75" Y="9.5" />
+      </Path>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAgAAAAAAAQAAAAAAAAAAAAAAACAAIAAA=</HashCode>
+      <FileName>Models\MessageModel.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Sender" />
+      <Property Name="Recipient" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="WpfMessenger.Models.UserModel">
+    <Position X="17.25" Y="9.5" Width="12" />
+    <AssociationLine Name="Devices" Type="WpfMessenger.Models.DeviceModel" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="17.25" Y="10.677" />
+        <Point X="15.344" Y="10.677" />
+        <Point X="15.344" Y="9.949" />
+      </Path>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AAARAAAAAAAAAAABAEAAAAUATAAgAAACAAAAAAAAAAA=</HashCode>
+      <FileName>Models\UserModel.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Property Name="Devices" />
+      <Property Name="Chats" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="WpfMessenger.Repositories.ChatsRepository">
+    <Position X="22.75" Y="6.75" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAIACBAAAAAAAAAAAAABAAQAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Repositories\ChatsRepository.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="_chat" />
+    </ShowAsAssociation>
+    <ShowAsCollectionAssociation>
+      <Field Name="_chats" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="WpfMessenger.Repositories.DevicesRepository">
+    <Position X="11.5" Y="11" Width="3.25" />
+    <AssociationLine Name="_device" Type="WpfMessenger.Models.DeviceModel" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="12.5" Y="11" />
+        <Point X="12.5" Y="9.125" />
+        <Point X="13.5" Y="9.125" />
+      </Path>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAABAAAEAAAAAAAAABABAgAgAAAAAAAAAAAA=</HashCode>
+      <FileName>Repositories\DevicesRepository.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="_device" />
+    </ShowAsAssociation>
+    <ShowAsCollectionAssociation>
+      <Field Name="_devices" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="WpfMessenger.Repositories.UsersRepository">
+    <Position X="17" Y="14" Width="2.75" />
+    <AssociationLine Name="_users" Type="WpfMessenger.Models.UserModel">
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="-0.638" Y="0.088" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>IAAAAAAAAABAAAAAAAAAAAAABAAAAIAgEAAAAAAAAAA=</HashCode>
+      <FileName>Repositories\UsersRepository.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="_user" />
+    </ShowAsAssociation>
+    <ShowAsCollectionAssociation>
+      <Field Name="_users" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="WpfMessenger.Validation.DataValidation">
+    <Position X="30" Y="15" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAACAAAAAAAAAAAAAAAAAAAgAAAAAAAAAACQ=</HashCode>
+      <FileName>Validation\DataValidation.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WpfMessenger.Views.ContactInfo" BaseTypeListCollapsed="true">
+    <Position X="22.5" Y="13.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAEAAAAAAAEAAAAAAAAAAAAAAIAAAAAAAIAAAAA=</HashCode>
+      <FileName>Views\ContactInfoView.xaml.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="_user" />
+    </ShowAsAssociation>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="WpfMessenger.Views.ListOfContactsView" BaseTypeListCollapsed="true">
+    <Position X="26.25" Y="13.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAICAAAAAAAIAAAAAAAIAAAAA=</HashCode>
+      <FileName>Views\ListOfContactsView.xaml.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="_user" />
+    </ShowAsAssociation>
+    <Lollipop Position="0.194" Collapsed="true" />
+  </Class>
+  <Class Name="WpfMessenger.Views.LoginView" BaseTypeListCollapsed="true">
+    <Position X="14.5" Y="13.5" Width="1.5" />
+    <AssociationLine Name="_user" Type="WpfMessenger.Models.UserModel" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="15.125" Y="13.5" />
+        <Point X="15.125" Y="11.148" />
+        <Point X="17.25" Y="11.148" />
+      </Path>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAABAAAAAEAAAAAAAAAAAAIAAAAAAAQIAAAA=</HashCode>
+      <FileName>Views\LoginView.xaml.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="_repository" />
+      <Field Name="_user" />
+    </ShowAsAssociation>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="WpfMessenger.Views.MainView" BaseTypeListCollapsed="true">
+    <Position X="30.5" Y="9.5" Width="2.5" />
+    <AssociationLine Name="_chat" Type="WpfMessenger.Models.ChatModel" ManuallyRouted="true" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="32.5" Y="9.5" />
+        <Point X="32.5" Y="3.625" />
+        <Point X="23.131" Y="3.625" />
+        <Point X="23.131" Y="4" />
+      </Path>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>CAAAAAAIEAAAAAAAABAAAAIAAAAAQIAAAAgQAAAAEAA=</HashCode>
+      <FileName>Views\MainView.xaml.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="_user" />
+      <Field Name="_chat" />
+    </ShowAsAssociation>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="WpfMessenger.Views.NewChatView" BaseTypeListCollapsed="true">
+    <Position X="26" Y="6.75" Width="1.5" />
+    <AssociationLine Name="_repository" Type="WpfMessenger.Repositories.ChatsRepository" FixedToPoint="true">
+      <Path>
+        <Point X="26" Y="6.938" />
+        <Point X="24.75" Y="6.938" />
+      </Path>
+    </AssociationLine>
+    <AssociationLine Name="_user" Type="WpfMessenger.Models.UserModel" FixedToPoint="true">
+      <Path>
+        <Point X="27.062" Y="8.367" />
+        <Point X="27.062" Y="9.5" />
+      </Path>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAABAAAAAAAAAAAAAAAAAAIAAAAAAAIIAAAA=</HashCode>
+      <FileName>Views\NewChatView.xaml.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="_repository" />
+      <Field Name="_user" />
+    </ShowAsAssociation>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="WpfMessenger.Views.NewContactView" BaseTypeListCollapsed="true">
+    <Position X="24.5" Y="13.25" Width="1.5" />
+    <AssociationLine Name="_repository" Type="WpfMessenger.Repositories.UsersRepository" ManuallyRouted="true" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="25.25" Y="14.867" />
+        <Point X="25.25" Y="15.438" />
+        <Point X="19.75" Y="15.438" />
+      </Path>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAABAAAAAAAAAAAAAAAAAAIAAAAAAAIIAAAA=</HashCode>
+      <FileName>Views\NewContactView.xaml.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="_repository" />
+      <Field Name="_user" />
+    </ShowAsAssociation>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="WpfMessenger.Views.RegistrationView" BaseTypeListCollapsed="true">
+    <Position X="28" Y="13.25" Width="1.5" />
+    <AssociationLine Name="_repository" Type="WpfMessenger.Repositories.UsersRepository" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="28.375" Y="14.867" />
+        <Point X="28.375" Y="15.938" />
+        <Point X="19.75" Y="15.938" />
+      </Path>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAEABAAAAAAAAAAAAAAAIAAIAAAAAAAAIAAAA=</HashCode>
+      <FileName>Views\RegistrationView.xaml.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="_user" />
+      <Field Name="DataValidation" />
+      <Field Name="_repository" />
+    </ShowAsAssociation>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="WpfMessenger.Views.RestorePasswordView" BaseTypeListCollapsed="true">
+    <Position X="20" Y="16.25" Width="1.5" />
+    <AssociationLine Name="_repository" Type="WpfMessenger.Repositories.UsersRepository" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="20" Y="17" />
+        <Point X="18.312" Y="17" />
+        <Point X="18.312" Y="16.324" />
+      </Path>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAA=</HashCode>
+      <FileName>Views\RestorePasswordView.xaml.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="_repository" />
+    </ShowAsAssociation>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="WpfMessenger.Views.UserInfoView" BaseTypeListCollapsed="true">
+    <Position X="30.5" Y="12.25" Width="1.5" />
+    <AssociationLine Name="_user" Type="WpfMessenger.Models.UserModel" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="30.5" Y="12.701" />
+        <Point X="30.125" Y="12.701" />
+        <Point X="30.125" Y="11.795" />
+        <Point X="29.25" Y="11.795" />
+      </Path>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAEAAAACAAAAAAACAAAAAAAIAAAAAAAIAAAAA=</HashCode>
+      <FileName>Views\UserInfoView.xaml.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="_user" />
+    </ShowAsAssociation>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="WpfMessenger.Views.UserSettingsView" BaseTypeListCollapsed="true">
+    <Position X="20.75" Y="13.25" Width="1.5" />
+    <AssociationLine Name="_repository" Type="WpfMessenger.Repositories.UsersRepository" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="21.5" Y="14.675" />
+        <Point X="21.5" Y="15.062" />
+        <Point X="19.75" Y="15.062" />
+      </Path>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAABAAAAAAAAAAAAAAAAAAIAAAAAAAAIAAAA=</HashCode>
+      <FileName>Views\UserSettingsView.xaml.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="_user" />
+      <Field Name="_repository" />
+    </ShowAsAssociation>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>
