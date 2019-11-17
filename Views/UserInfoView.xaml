@@ -8,17 +8,17 @@
         Title="UserInfoView" Height="270" Width="350" ResizeMode="NoResize"
         Background="#FF252424" FontFamily="Century Gothic" WindowStartupLocation="CenterScreen">
     <Grid>
-        <Label Margin="10,10,0,0" Height="40" Content="{Binding Path=FullName}"
+        <Label Margin="10,10,0,0" Height="40" Content="{Binding Path=Fullname}"
                Style="{StaticResource Field}" Width="325"/>
         <Label Margin="10,50,0,0" Height="40" Content="{Binding Path=Number}"
                Style="{StaticResource Field}" Width="325"/>
-        <Button x:Name="btnBack" Background="Transparent" BorderBrush="Transparent"
-                Click="BtnBack_Click" Margin="10,175,284.667,17" Width="50" Height="50">
-            <Image Source="/Style/back.png" Height="50"/>
+        <Button x:Name="btnBack" Background="Transparent" BorderBrush="Transparent" Margin="10,175,287.667,21"
+                Command="{Binding Back}">
+            <Image Source="/Style/back.png"/>
         </Button>
-        <Button x:Name="btnNewChat" Content="New Chat" Margin="10,95,0,0"
-                Click="BtnNewChat_Click" Style="{StaticResource UserInfoBtn}" Width="325"/>
-        <Button x:Name="btnSettings" Content="Settings" Margin="10,135,0,0" 
-                Click="BtnSettings_Click" Style="{StaticResource UserInfoBtn}" Width="325"/>
+        <Button x:Name="btnNewChat" Content="New Chat" Margin="10,95,0,0" Style="{StaticResource UserInfoBtn}" Width="325"
+                Command="{Binding NewChat}"/>
+        <Button x:Name="btnSettings" Content="Settings" Margin="10,135,0,0" Style="{StaticResource UserInfoBtn}" Width="325"
+                Command="{Binding Settings}"/>
     </Grid>
 </Window>

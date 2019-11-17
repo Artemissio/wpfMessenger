@@ -16,7 +16,7 @@ namespace WpfMessenger.Models
         {
             ipAddress = iP;
             User = user;
-            user.AddDevice(this);
+            //user.AddDevice(this);
         }
     }
 }

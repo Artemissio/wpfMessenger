@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 using WpfMessenger.Models;
@@ -11,7 +13,6 @@ namespace WpfMessenger.Repositories
     {
         static ChatsRepository _repository;
 
-        ChatModel _chat;
         List<ChatModel> _chats;
 
         ChatsRepository()
@@ -28,12 +29,12 @@ namespace WpfMessenger.Repositories
 
         public ChatModel GetChat(string search)
         {
-            for (int i = 0; i < _chats.Count; i++)
-            {
-                if (_chats[i].Name == search)
-                    _chat = _chats[i];
-            }
-            return _chat;
+            return _chats.FirstOrDefault(c => c.Name == search);
+        }
+
+        public ChatModel GetChat(int id)
+        {
+            return _chats.FirstOrDefault(c => c.Id == id);
         }
 
         public void AddChat(ChatModel chat)
@@ -41,17 +42,28 @@ namespace WpfMessenger.Repositories
             _chats.Add(chat);
         }
 
-        public IEnumerable<ChatModel> GetChats()
+        public void UpdateChat(int id, string name, UserModel user)
+        {
+            ChatModel chat = _chats.FirstOrDefault(c => c.Id == id);
+
+            chat.Name = name;
+            chat.Admin = user;
+        }
+
+        public void RemoveChat(ChatModel chat)
+        {
+            if (chat != null)
+                _chats.Remove(chat);
+        }
+
+        public List<ChatModel> GetChats()
         {
             return _chats;
-        }
-        public IEnumerable<ChatModel> GetChats(string name)
+        }       
+
+        public List<ChatModel> GetChats(string name)
         {
-            return _chats.FindAll(c => c.Name.Contains(name));
-        }
-        public IEnumerable<ChatModel> GetChats(UserModel user)
-        {
-            return _chats.FindAll(c => c.Members.Contains(user));
+            return _chats.ToList().FindAll(c => c.Name.Contains(name));
         }
     }
 }

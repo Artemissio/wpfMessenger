@@ -16,8 +16,20 @@
             <Trigger Property="IsMouseOver" Value="True">
                 <Setter Property="BorderBrush" Value="#FF5B82E0" />
             </Trigger>
+
+            <Trigger Property="Validation.HasError" Value="True">
+                <Setter Property="ToolTip"
+                    Value="{Binding RelativeSource={RelativeSource Self},
+                        Path=(Validation.Errors)[0].ErrorContent}" />
+            </Trigger>
         </Style.Triggers>
     </Style>
+
+    <ControlTemplate x:Key="ValidationFailed">
+        <Border BorderBrush="Red" BorderThickness="2">
+            <AdornedElementPlaceholder />
+        </Border>
+    </ControlTemplate>
 
     <!-- BUTTON ACCEPT -->
     <ControlTemplate TargetType="Button" x:Key="AcceptButton">
@@ -109,13 +121,16 @@
     </Style>
     
     <!-- LISTBOX ITEM -->
-    <Style TargetType="ListBoxItem" x:Key="ListItem">
+    <Style TargetType="ListBoxItem">
         <Setter Property="Height" Value="50"/>
         <Style.Triggers>
             <Trigger Property="IsMouseOver" Value="True">
-                <Setter Property="Foreground" Value="#FF252424"/>
+                <!--<Setter Property="Foreground" Value="#FF252424"/>-->
                 <Setter Property="FontWeight" Value="Bold"/>
-                <Setter Property="Background" Value="White"/>
+                <!--<Setter Property="Background" Value="White"/>-->
+            </Trigger>
+            <Trigger Property="IsSelected" Value="True">
+                <Setter Property="FontWeight" Value="Bold"/>
             </Trigger>
         </Style.Triggers>
     </Style>
@@ -124,4 +139,5 @@
     <Style TargetType="ListBoxItem" x:Key="Message">
         <Setter Property="MinHeight" Value="35"/>
     </Style>
+    
 </ResourceDictionary>

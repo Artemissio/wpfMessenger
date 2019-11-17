@@ -20,7 +20,7 @@ namespace WpfMessenger.Views
     /// </summary>
     public partial class RestorePasswordView : Window
     {
-        UsersRepository _repository = UsersRepository.GetInstance();
+        //UsersRepository _repository = UsersRepository.GetInstance();
 
         public RestorePasswordView()
         {
@@ -29,9 +29,9 @@ namespace WpfMessenger.Views
 
         private void BtnAccept_Click(object sender, RoutedEventArgs e)
         {
-            LoginView loginView = new LoginView();
-            loginView.Show();
-            Close();
+            //LoginView loginView = new LoginView();
+            //loginView.Show();
+            //Close();
         }
     }
 }

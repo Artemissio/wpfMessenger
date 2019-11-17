@@ -21,51 +21,46 @@
             <RowDefinition Height="47"></RowDefinition>
         </Grid.RowDefinitions>
 
-        <Button x:Name="btnUserInfo" Grid.Column="0" Grid.Row="0" Background="Transparent" Click="BtnUserInfo_Click">
+        <Button x:Name="btnUserInfo" Grid.Column="0" Grid.Row="0" Background="Transparent" Command="{Binding UserInfo}">
             <Image Source="/Style/menu.png"/>
         </Button>
 
-        <ListBox x:Name="ListOfChats" Grid.Row="1" Grid.Column="0" Grid.RowSpan="2" Grid.ColumnSpan="2"
-                 Margin="0,0,0,0" Style="{StaticResource List}" SelectionChanged="ListOfChats_SelectionChanged">
+        <!--<Button x:Name="btnRefresh" Grid.Column="1" Grid.Row="0" Background="Transparent" 
+                Command="{Binding Refresh}" Margin="132,0,5,0" Height="30" VerticalAlignment="Top">
+            <Image Source="/Style/refresh.png" Width="30" Height="20"/>
+        </Button>-->
+
+        <ListBox x:Name="ListOfChats" Grid.Row="1" Grid.Column="0" Grid.RowSpan="2" Grid.ColumnSpan="2" Style="{StaticResource List}" 
+                 SelectedItem="{Binding SelectedChat}" ItemsSource="{Binding Chats, UpdateSourceTrigger=PropertyChanged}">
             <ListBox.ItemTemplate>
                 <DataTemplate>
-                    <ListBoxItem Content="{Binding Path=_chat.Name}" Style="{StaticResource ListItem}"/>
+                    <ListBoxItem Content="{Binding Name}"/>
                 </DataTemplate>
             </ListBox.ItemTemplate>
-            <!--<ListBoxItem Content="Chat 2" Style="{StaticResource ListItem}"/>
-            <ListBoxItem Content="Chat 3" Style="{StaticResource ListItem}"/>
-            <ListBoxItem Content="Chat 4" Style="{StaticResource ListItem}"/>
-            <ListBoxItem Content="Chat 5" Style="{StaticResource ListItem}"/>-->
         </ListBox>
 
         <ListBox x:Name="ChatWindow" Grid.Row="1" Grid.Column="2" Grid.ColumnSpan="2" 
-                 Background="#FF333131" BorderBrush="#FF333131" Foreground="White" 
-                 SelectionChanged="ChatWindow_SelectionChanged">
-            <ListBox.ItemTemplate>
-                <DataTemplate>
-                    <ListBoxItem Content="{Binding Path=_chat.Messages}"/>
-                </DataTemplate>
-            </ListBox.ItemTemplate>
-            <!--<ListBoxItem Height="35" Content="User Name - User Message"/>
-            <ListBoxItem Height="35" Content="User Name - User Message"/>
-            <ListBoxItem Height="35" Content="User Name - User Message"/>
-            <ListBoxItem Height="35" Content="User Name - User Message"/>-->
+                 Background="#FF333131" BorderBrush="#FF333131" Foreground="White"
+                 ItemsSource="{Binding Messages}">
         </ListBox>
 
-        <RichTextBox x:Name="rtbMessage" Grid.Column="2" Grid.Row="2" Background="Transparent" Foreground="White" BorderBrush="#FF333131"/>
+        <TextBox x:Name="rtbMessage" Grid.Column="2" Grid.Row="2" Background="Transparent" Foreground="White" 
+                 BorderBrush="#FF333131" Height="47" Margin="0,0,0,0" Text="{Binding TextMessage}"/>
+
         <Button x:Name="btnSend" Grid.Row="2" Grid.Column="3" Content="Send" Background="#FF5B82E0" 
-                Foreground="White" Click="BtnSend_Click"/>
+                Foreground="White" Command="{Binding SendMessage}"/>
         <Button x:Name="btnBack" Grid.Column="3" Grid.Row="0" Background="Transparent" 
-                BorderBrush="Transparent" Width="25" Click="BtnExit_Click">
+                BorderBrush="Transparent" Width="25" Margin="21.333,0,0.333,0" Command="{Binding Exit}">
             <Image Source="/Style/exit.png" Width="25"/>
         </Button>
-        <Label Style="{StaticResource Title}" Content="{Binding Path=_chat.name}" 
+        <Label Style="{StaticResource Title}"
+               Content="{Binding ChatName, UpdateSourceTrigger=PropertyChanged}" 
                Grid.Row="0" Grid.Column="2" />
-        <Button x:Name="btnSettings" Grid.Column="2" Grid.Row="0" Background="Transparent" 
-                BorderBrush="Transparent" Width="25" Margin="316,0,0,0" Click="BtnSettings_Click">
-            <Image Source="/Style/points.png" Width="25"/>
+        <Button x:Name="btnSettings" Grid.Column="3" Grid.Row="0" Background="Transparent" 
+                BorderBrush="Transparent" Width="15" Margin="0.333,0,31.333,0" Command="{Binding ChatSettings}">
+            <Image Source="/Style/points.png" Width="15"/>
         </Button>
-        <TextBox x:Name="tbSearch" Margin="5,5,10,0" BorderBrush="#FF2C2C2D" 
-            TextChanged="TbSearch_TextChanged" Grid.Column="1"/>
+        <TextBox x:Name="tbSearch" Margin="5,3,5,0" BorderBrush="#FF2C2C2D" Grid.Column="1" 
+                 Text="{Binding Search, UpdateSourceTrigger=PropertyChanged}"/>
     </Grid>
 </Window>

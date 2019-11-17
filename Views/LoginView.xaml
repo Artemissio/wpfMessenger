@@ -23,13 +23,15 @@
         <Label Content="Login" Grid.Column="0" Grid.Row="0" Style="{StaticResource Title}" Margin="10,10,20,10"/>
         <Label Content="Number" Grid.Column="0" Grid.Row="1" Style="{StaticResource Field}" Margin="10,10,10,10"/>
         <Label Content="Password" Grid.Column="0" Grid.Row="2" Style="{StaticResource Field}" Margin="10,10,10,10"/>
-        <TextBox x:Name="tbNumber" Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="2" Margin="10,10,10,0" />
-        <TextBox x:Name="tbPassword" Grid.Column="1" Grid.Row="2" Grid.ColumnSpan="2" Margin="10,10,10,10" />
+        <TextBox x:Name="tbNumber" Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="2" Margin="10,10,10,0" 
+                 Text="{Binding Number, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"/>
+        <TextBox x:Name="tbPassword" Grid.Column="1" Grid.Row="2" Grid.ColumnSpan="2" Margin="10,10,10,10" 
+                 Text="{Binding Password, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"/>
         <Button  x:Name="btnAccept" Grid.Column="1" Grid.Row="3" 
-                 Template="{StaticResource AcceptButton}" Click="BtnAccept_Click"/>
+                 Template="{StaticResource AcceptButton}" Command="{Binding LoginCommand}"/>
         <Label x:Name="tblRegistration" Content="Registration" Grid.Column="0" Grid.Row="4" Margin="10,10,0,20"
-                   MouseLeftButtonUp="TblRegistration_MouseLeftButtonUp" Style="{StaticResource Link}" Height="25"/>
+                    Style="{StaticResource Link}" Height="25" MouseLeftButtonUp="TblRegistration_MouseLeftButtonUp"/>
         <Label x:Name="tblForgotPassword" Content="Forgot Password" Grid.Column="2" Grid.Row="4" Margin="-3,10,0,20"
-                   MouseLeftButtonUp="TblForgotPassword_MouseLeftButtonUp" Style="{StaticResource Link}" Height="25"/>
+                   Style="{StaticResource Link}" Height="25" MouseLeftButtonUp="TblForgotPassword_MouseLeftButtonUp"/>
     </Grid>
 </Window>

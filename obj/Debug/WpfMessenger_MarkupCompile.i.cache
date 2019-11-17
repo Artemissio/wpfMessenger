@@ -4,17 +4,17 @@
 winexe
 C#
 .cs
-C:\Users\xiaomi\Documents\.NET Projects\WpfMessenger\obj\Debug\
+C:\Users\xiaomi\Documents\.NET Projects\WpfMessenger — MVVM\obj\Debug\
 WpfMessenger
 none
 false
 DEBUG;TRACE
-C:\Users\xiaomi\Documents\.NET Projects\WpfMessenger\App.xaml
-101597361188
+C:\Users\xiaomi\Documents\.NET Projects\WpfMessenger — MVVM\App.xaml
+10-1033952834
 
-361280335857
-141850378777
-Style\Styles.xaml;Views\ChatSettings.xaml;Views\ListOfUsers.xaml;Views\LoginView.xaml;Views\MainView.xaml;Views\NewChatView.xaml;Views\RegistrationView.xaml;Views\RestorePasswordView.xaml;Views\UserInfoView.xaml;Views\UserSettingsView.xaml;
+35976170501
+16-1601606589
+Style\Styles.xaml;Views\ChatSettingsView.xaml;Views\ListOfUsersView.xaml;Views\LoginView.xaml;Views\MainView.xaml;Views\NewChatView.xaml;Views\RegistrationView.xaml;Views\RestorePasswordView.xaml;Views\UserInfoView.xaml;Views\UserSettingsView.xaml;
 
 False
 

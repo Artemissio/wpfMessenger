@@ -13,6 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using WpfMessenger.Models;
 using WpfMessenger.Repositories;
+using WpfMessenger.ViewModels;
 
 namespace WpfMessenger.Views
 {
@@ -21,20 +22,17 @@ namespace WpfMessenger.Views
     /// </summary>
     public partial class UserSettingsView : Window
     {
-        UserModel _user;
-        UsersRepository _repository = UsersRepository.GetInstance();       
+
+        UserSettingsViewModel userSettingsViewModel;
 
         public UserSettingsView(UserModel user)
         {
             InitializeComponent();
-            _user = user;
-        }
+            userSettingsViewModel = new UserSettingsViewModel(user);
 
-        private void BtnAccept_Click(object sender, RoutedEventArgs e)
-        {
-            UserInfoView userInfoView = new UserInfoView(_user);
-            userInfoView.Show();
-            Close();
+            DataContext = userSettingsViewModel;
+
+            userSettingsViewModel.Closing += (s, e) => Close();
         }
     }
 }

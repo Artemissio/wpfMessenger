@@ -1,67 +1,47 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
-using WpfMessenger.Interfaces;
+using WpfMessenger.Validation;
 
 namespace WpfMessenger.Models
 {
-    public class UserModel /*: IUser*/
+    public class UserModel 
     {
+        private static int _idGenerator = 0;
+        public int Id { get; private set; }
         public string Name { get; set; }
         public string Surname { get; set; }
-        public string Number { get; set; }
         public string Nickname { get; set; }
+        public string Number { get; set; }
         public string Password { get; set; }
         public bool IsAdmin { get; set; }
 
-        public List<DeviceModel> Devices { get; }
-        public List<ChatModel> Chats { get; }
-        //public List<UserModel> Contacts { get; }
+        public string Fullname
+        {
+            get { return Name + " " + Surname; }
+        }
+
+        public UserModel() { }
 
         public UserModel(string name, string number)
         {
+            Id = _idGenerator++;
             Name = name;
             Number = number;
         }
         public UserModel(string name, string surname, string number, string nickname, string password, bool admin)
-                        :this(name, number)
         {
+            Id = _idGenerator++;
+            Name = name;
             Surname = surname;
             Nickname = nickname;
+            Number = number;
             Password = password;
             IsAdmin = admin;
-
-            Devices = new List<DeviceModel>();
-            Chats = new List<ChatModel>();
-            //Contacts = new List<UserModel>();
-        }
-
-        public void AddDevice(DeviceModel device)
-        {
-            if (!Devices.Contains(device))
-                Devices.Add(device);
-        }
-
-        public void AddChat(ChatModel chat)
-        {
-            Chats.Add(chat);
-        }
-
-        //public void AddContact(UserModel contact)
-        //{
-        //    if(!Contacts.Contains(contact))
-        //        Contacts.Add(contact);
-        //}
-
-        public void RemoveMember(ChatModel chat, UserModel user)
-        {
-            if (IsAdmin)
-            {
-                if (chat.Members.Contains(user))
-                    chat.Members.Remove(user);
-            }      
         }
     }
 }

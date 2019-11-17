@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,6 +14,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using WpfMessenger.Models;
 using WpfMessenger.Repositories;
+using WpfMessenger.ViewModels;
 
 namespace WpfMessenger.Views
 {
@@ -21,45 +23,22 @@ namespace WpfMessenger.Views
     /// </summary>
     public partial class NewChatView : Window
     {
-        ChatsRepository chatsRepository = ChatsRepository.GetInstance();
-        UsersRepository usersRepository = UsersRepository.GetInstance();
-        UserModel _user;
-        List<UserModel> selectedUsers;
+        NewChatViewModel newChatViewModel;
 
         public NewChatView(UserModel user)
         {
             InitializeComponent();
-            _user = user;
-        }
 
-        private void BtnAccept_Click(object sender, RoutedEventArgs e)
-        {
-            ChatModel chat = new ChatModel(tbChatName.Text, _user);
-            chat.Members = selectedUsers;
+            newChatViewModel = new NewChatViewModel(user);
 
-            chatsRepository.AddChat(chat);
+            DataContext = newChatViewModel;
 
-            MainView mainView = new MainView(_user);
-            mainView.Show();
-            Close();
-        }
-
-        private void BtnBack_Click(object sender, RoutedEventArgs e)
-        {
-            UserInfoView userInfoView = new UserInfoView(_user);
-            userInfoView.Show();
-            Close();
-        }
-
-        private void TbSearchContact_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            ListOfContacts.ItemsSource = usersRepository.GetUsers(tbSearchContact.Text);
+            newChatViewModel.Closing += (s, e) => Close();
         }
 
         private void ListOfContacts_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            selectedUsers = new List<UserModel>();
-            selectedUsers = (List<UserModel>)ListOfContacts.SelectedItems;
+            newChatViewModel.SelectedUsers = ListOfContacts.SelectedItems.Cast<UserModel>().ToList();
         }
     }
 }

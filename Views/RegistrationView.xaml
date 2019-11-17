@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WpfMessenger.Views"
         mc:Ignorable="d"
-        Title="RegistrationView" MinHeight="450" Height="450" MinWidth="350" Width="350" 
+        Title="RegistrationView" MinHeight="510" Height="510" MinWidth="365" Width="365" 
         Background="#FF333131" FontFamily="Century Gothic" WindowStartupLocation="CenterScreen">
     <Grid>
         <Grid.ColumnDefinitions>
@@ -14,30 +14,51 @@
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="40px"></RowDefinition>
-            <RowDefinition Height="0.2*"></RowDefinition>
-            <RowDefinition Height="0.3*"></RowDefinition>
-            <RowDefinition Height="0.3*"></RowDefinition>
-            <RowDefinition Height="0.3*"></RowDefinition>
-            <RowDefinition Height="0.3*"></RowDefinition>
-            <RowDefinition Height="0.3*"></RowDefinition>
-            <RowDefinition Height="0.4*"></RowDefinition>
+            <RowDefinition Height="60px"></RowDefinition>
+            <RowDefinition Height="60px"></RowDefinition>
+            <RowDefinition Height="60px"></RowDefinition>
+            <RowDefinition Height="60px"></RowDefinition>
+            <RowDefinition Height="60px"></RowDefinition>
+            <RowDefinition Height="60px"></RowDefinition>
+            <RowDefinition Height="60px"></RowDefinition>
+            <RowDefinition Height="50px"></RowDefinition>
         </Grid.RowDefinitions>
         <Label Margin="10,5,0,0" Content="Registration" Style="{StaticResource Title}"/>
         <Label Margin="10,0,0,0" Content="Name" Grid.Row="1" Style="{StaticResource Field}"/>
-        <TextBox x:Name="tbName" Margin="0,0,10,0" Grid.Row="1" Grid.Column="1"/>
+
+        <TextBox x:Name="tbName" Margin="0,0,10,0" Grid.Row="1" Grid.Column="1" 
+                 Text="{Binding Name, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"/>
+
         <Label Margin="10,0,0,0" Content="Surname" Grid.Row="2" Style="{StaticResource Field}"/>
-        <TextBox x:Name="tbSurname" Background="{x:Null}" Margin="0,0,10,0" Grid.Row="2" Grid.Column="1"/>
+
+        <TextBox x:Name="tbSurname" Margin="0,0,10,0" Grid.Row="2" Grid.Column="1"
+                 Text="{Binding Surname, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"/>
+
         <Label Margin="10,0,0,0" Content="Nickname" Grid.Row="3" Style="{StaticResource Field}"/>
-        <TextBox x:Name="tbNickname" Margin="0,0,10,0" Grid.Row="3" Grid.Column="1"/>
+
+        <TextBox x:Name="tbNickname" Margin="0,0,10,0" Grid.Row="3" Grid.Column="1"
+                 Text="{Binding Nickname, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"/>
+
         <Label Margin="10,0,0,0" Content="Number" Grid.Row="4" Style="{StaticResource Field}"/>
-        <TextBox x:Name="tbNumber" Margin="0,0,10,0" Grid.Row="4" Grid.Column="1"/>
+
+        <TextBox x:Name="tbNumber" Margin="0,0,10,0" Grid.Row="4" Grid.Column="1"
+                 Text="{Binding Number, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"/>
+
         <Label Margin="10,0,0,0" Content="Password" Grid.Row="5" Style="{StaticResource Field}"/>
-        <TextBox x:Name="tbPassword" Margin="0,0,10,0" Grid.Row="5" Grid.Column="1"/>
+
+        <TextBox x:Name="tbPassword" Margin="0,0,10,0" Grid.Row="5" Grid.Column="1"
+                 Text="{Binding Password, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"/>
+
         <Label Margin="10,0,0,0" Content="Confirm Password" Grid.Row="6" Style="{StaticResource Field}"/>
-        <TextBox x:Name="tbConfirmPassword" Margin="0,0,10,0" Grid.Row="6" Grid.Column="1"/>
-        <Button x:Name="btnAccept" Content="ACCEPT" Margin="0,0,0,0" Click="BtnAccept_Click" Grid.Row="7" 
-                Grid.Column="1" Template="{StaticResource AcceptButton}"/>
-        <Label x:Name="tblLogin" Content="Login" Margin="30,40,0,0" MouseLeftButtonUp="TblLogin_MouseLeftButtonUp" 
-               Grid.Row="7" Grid.Column="1" Style="{StaticResource Link}"/>
+
+        <TextBox x:Name="tbConfirmPassword" Margin="0,0,10,0" Grid.Row="6" Grid.Column="1"
+                 Text="{Binding ConfirmPassword, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"/>
+
+        <Button x:Name="btnAccept" Margin="2,0,108.667,0" Command="{Binding SignUp}"
+                IsEnabled="{Binding Path=Validated, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                Template="{StaticResource AcceptButton}" Grid.Row="7" Grid.Column="1"/>
+
+        <Label x:Name="tblLogin" Content="Login" Margin="9.667,43,0,38" MouseLeftButtonUp="TblLogin_MouseLeftButtonUp" 
+               Grid.Row="7" Grid.Column="1" Style="{StaticResource Link}" Height="29" Grid.RowSpan="2"/>
     </Grid>
 </Window>

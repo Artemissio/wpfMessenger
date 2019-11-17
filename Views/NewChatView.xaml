@@ -5,26 +5,30 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WpfMessenger.Views"
         xmlns:eo="http://schemas.microsoft.com/xps/2005/06"
+        xmlns:i="http://schemas.microsoft.com/expression//2010/interactivity"
+        xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions"
         mc:Ignorable="d"
-        Title="NewChatView" MinHeight="450" Height="450" MinWidth="335" Width="335" 
+        Title="NewChatView" Height="455" Width="335" ResizeMode="NoResize"
         Background="#FF333131" FontFamily="Century Gothic" WindowStartupLocation="CenterScreen">
     <Grid>
         <Button x:Name="btnBack" Margin="10,378,283,10" Background="Transparent" 
-                BorderBrush="Transparent" Click="BtnBack_Click">
+                BorderBrush="Transparent" Command="{Binding Back}">
             <Image Source="/Style/back.png"/>
         </Button>
-        <Button x:Name="btnAccept" Content="OK" Margin="265,375,10,0" Click="BtnAccept_Click"
+        <Button x:Name="btnAccept" Content="OK" Margin="265,375,10,0" Command="{Binding Accept}"
                 Template="{StaticResource OkButton}"/>
-        <Label Margin="10,10,10,-0.333" Content="Add Chat" Style="{StaticResource Title}"/>
-        <TextBox x:Name="tbChatName" Margin="117,41,10,0" />
+        <Label Margin="10,10,10,372.333" Content="Add Chat" Style="{StaticResource Title}"/>
+        <TextBox x:Name="tbChatName" Margin="117,41,10,0" 
+                 Text="{Binding Name, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
         <Label Margin="10,40,0,0" Content="Chat Name" Style="{StaticResource Field}"/>
         <TextBox x:Name="tbSearchContact" Margin="10,75,10,0" 
-                    TextChanged="TbSearchContact_TextChanged"/>
+                    Text="{Binding Search, UpdateSourceTrigger=PropertyChanged}"/>
         <ListBox x:Name="ListOfContacts" Grid.Column="0" Margin="10,105,10,55" SelectionMode="Multiple" 
-                 Style="{StaticResource List}" SelectionChanged="ListOfContacts_SelectionChanged">
+                 Style="{StaticResource List}" SelectionChanged="ListOfContacts_SelectionChanged"
+                 ItemsSource="{Binding Users, UpdateSourceTrigger=PropertyChanged}">
             <ListBox.ItemTemplate>
                 <DataTemplate>
-                    <ListBoxItem Style="{StaticResource ListItem}" Content="{Binding Path=Nickname}"/>
+                    <ListBoxItem Content="{Binding Nickname}" />
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>

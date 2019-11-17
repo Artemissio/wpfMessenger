@@ -1,20 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using WpfMessenger.Repositories;
-using System.Windows.Documents;
-using WpfMessenger.Models;
-using WpfMessenger.Interfaces;
+﻿using System.Windows;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
-using WpfMessenger.Views;
+using WpfMessenger.ViewModels;
 
 namespace WpfMessenger.Views
 {
@@ -23,24 +9,13 @@ namespace WpfMessenger.Views
     /// </summary>
     public partial class LoginView : Window
     {
-        UsersRepository _repository = UsersRepository.GetInstance();
-        UserModel _user;
+        LoginViewModel loginViewModel = new LoginViewModel();
         public LoginView()
         {
             InitializeComponent();
-        }
+            DataContext = loginViewModel;
 
-        private void BtnAccept_Click(object sender, RoutedEventArgs e)
-        {
-            _user = _repository.GetUser(tbNumber.Text, tbPassword.Text);
-
-            if (_user != null)
-            {
-                MainView mainView = new MainView(_user);
-                mainView.Show();
-                Close();
-            }
-            MessageBox.Show("Login or Password Are Incorrect");
+            loginViewModel.Closing += (s, e) => Close();
         }
 
         private void TblForgotPassword_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)

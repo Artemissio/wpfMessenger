@@ -31,3 +31,41 @@ C:\Users\xiaomi\Documents\.NET Projects\WpfMessenger\obj\Debug\Views\ChatSetting
 C:\Users\xiaomi\Documents\.NET Projects\WpfMessenger\obj\Debug\Views\ListOfUsers.g.cs
 C:\Users\xiaomi\Documents\.NET Projects\WpfMessenger\obj\Debug\Views\ChatSettings.baml
 C:\Users\xiaomi\Documents\.NET Projects\WpfMessenger\obj\Debug\Views\ListOfUsers.baml
+C:\Users\xiaomi\Documents\.NET Projects\WpfMessenger — MVVM\obj\Debug\WpfMessenger.csprojAssemblyReference.cache
+C:\Users\xiaomi\Documents\.NET Projects\WpfMessenger — MVVM\obj\Debug\Style\Styles.baml
+C:\Users\xiaomi\Documents\.NET Projects\WpfMessenger — MVVM\obj\Debug\Views\ChatSettingsView.g.cs
+C:\Users\xiaomi\Documents\.NET Projects\WpfMessenger — MVVM\obj\Debug\Views\ListOfUsersView.g.cs
+C:\Users\xiaomi\Documents\.NET Projects\WpfMessenger — MVVM\obj\Debug\Views\LoginView.g.cs
+C:\Users\xiaomi\Documents\.NET Projects\WpfMessenger — MVVM\obj\Debug\Views\MainView.g.cs
+C:\Users\xiaomi\Documents\.NET Projects\WpfMessenger — MVVM\obj\Debug\Views\NewChatView.g.cs
+C:\Users\xiaomi\Documents\.NET Projects\WpfMessenger — MVVM\obj\Debug\Views\RegistrationView.g.cs
+C:\Users\xiaomi\Documents\.NET Projects\WpfMessenger — MVVM\obj\Debug\Views\RestorePasswordView.g.cs
+C:\Users\xiaomi\Documents\.NET Projects\WpfMessenger — MVVM\obj\Debug\Views\UserInfoView.g.cs
+C:\Users\xiaomi\Documents\.NET Projects\WpfMessenger — MVVM\obj\Debug\Views\UserSettingsView.g.cs
+C:\Users\xiaomi\Documents\.NET Projects\WpfMessenger — MVVM\obj\Debug\App.g.cs
+C:\Users\xiaomi\Documents\.NET Projects\WpfMessenger — MVVM\obj\Debug\WpfMessenger_MarkupCompile.cache
+C:\Users\xiaomi\Documents\.NET Projects\WpfMessenger — MVVM\obj\Debug\WpfMessenger_MarkupCompile.lref
+C:\Users\xiaomi\Documents\.NET Projects\WpfMessenger — MVVM\obj\Debug\WpfMessenger.exe
+C:\Users\xiaomi\Documents\.NET Projects\WpfMessenger — MVVM\obj\Debug\WpfMessenger.pdb
+C:\Users\xiaomi\Documents\.NET Projects\WpfMessenger — MVVM\bin\Debug\WpfMessenger.exe.config
+C:\Users\xiaomi\Documents\.NET Projects\WpfMessenger — MVVM\bin\Debug\WpfMessenger.exe
+C:\Users\xiaomi\Documents\.NET Projects\WpfMessenger — MVVM\bin\Debug\WpfMessenger.pdb
+C:\Users\xiaomi\Documents\.NET Projects\WpfMessenger — MVVM\bin\Debug\EntityFramework.dll
+C:\Users\xiaomi\Documents\.NET Projects\WpfMessenger — MVVM\bin\Debug\EntityFramework.SqlServer.dll
+C:\Users\xiaomi\Documents\.NET Projects\WpfMessenger — MVVM\bin\Debug\EntityFramework.xml
+C:\Users\xiaomi\Documents\.NET Projects\WpfMessenger — MVVM\bin\Debug\EntityFramework.SqlServer.xml
+C:\Users\xiaomi\Documents\.NET Projects\WpfMessenger — MVVM\obj\Debug\App.baml
+C:\Users\xiaomi\Documents\.NET Projects\WpfMessenger — MVVM\obj\Debug\Views\ChatSettingsView.baml
+C:\Users\xiaomi\Documents\.NET Projects\WpfMessenger — MVVM\obj\Debug\Views\ListOfUsersView.baml
+C:\Users\xiaomi\Documents\.NET Projects\WpfMessenger — MVVM\obj\Debug\Views\LoginView.baml
+C:\Users\xiaomi\Documents\.NET Projects\WpfMessenger — MVVM\obj\Debug\Views\MainView.baml
+C:\Users\xiaomi\Documents\.NET Projects\WpfMessenger — MVVM\obj\Debug\Views\NewChatView.baml
+C:\Users\xiaomi\Documents\.NET Projects\WpfMessenger — MVVM\obj\Debug\Views\RegistrationView.baml
+C:\Users\xiaomi\Documents\.NET Projects\WpfMessenger — MVVM\obj\Debug\Views\RestorePasswordView.baml
+C:\Users\xiaomi\Documents\.NET Projects\WpfMessenger — MVVM\obj\Debug\Views\UserInfoView.baml
+C:\Users\xiaomi\Documents\.NET Projects\WpfMessenger — MVVM\obj\Debug\Views\UserSettingsView.baml
+C:\Users\xiaomi\Documents\.NET Projects\WpfMessenger — MVVM\obj\Debug\WpfMessenger.g.resources
+C:\Users\xiaomi\Documents\.NET Projects\WpfMessenger — MVVM\obj\Debug\WpfMessenger.Properties.Resources.resources
+C:\Users\xiaomi\Documents\.NET Projects\WpfMessenger — MVVM\obj\Debug\WpfMessenger.csproj.GenerateResource.cache
+C:\Users\xiaomi\Documents\.NET Projects\WpfMessenger — MVVM\obj\Debug\WpfMessenger.csproj.CoreCompileInputs.cache
+C:\Users\xiaomi\Documents\.NET Projects\WpfMessenger — MVVM\obj\Debug\WpfMessenger.csproj.CopyComplete

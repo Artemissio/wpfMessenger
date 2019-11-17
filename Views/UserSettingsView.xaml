@@ -5,14 +5,21 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WpfMessenger.Views"
         mc:Ignorable="d"
-        Title="UserSettingsView" MinHeight="275" Height="275" MinWidth="325" Width="325"
+        Title="UserSettingsView" MinHeight="285" MaxHeight="285" Height="285" MinWidth="335" MaxWidth="335" Width="335"
         Background="#FF333131" FontFamily="Century Gothic" WindowStartupLocation="CenterScreen">
     <Grid>
-        <Label Margin="10,10,0,0" Content="Account" Style="{StaticResource Title}"/>
-        <TextBox x:Name="tbNumber" Margin="10,45,10,0"/>
-        <TextBox x:Name="tbNickname" Margin="10,95,10,0"/>
-        <TextBox x:Name="tbPassword" Margin="10,145,10,0"/>
-        <Button x:Name="btnAccept" Content="ACCEPT" Margin="112,191,112,20" 
-                Click="BtnAccept_Click" Template="{StaticResource AcceptButton}"/>
+        <Label Margin="0,0,-0.333,0.333" Content="Account" Style="{StaticResource Title}"/>
+        <Button x:Name="btnBack" Background="Transparent" BorderBrush="Transparent" Width="35" 
+                Height="35" Margin="10,190,273.667,20.333" Command="{Binding Back}">
+            <Image Source="/Style/back.png" Height="35" Width="35"/>
+        </Button>
+        <TextBox x:Name="tbNumber" Margin="10,45,10,0" 
+                 Text="{Binding Number, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"/>
+        <TextBox x:Name="tbNickname" Margin="10,95,10,0" 
+                 Text="{Binding Nickname, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"/>
+        <TextBox x:Name="tbPassword" Margin="10,145,10,0" 
+                 Text="{Binding Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"/>
+        <Button x:Name="btnAccept" Content="ACCEPT" Margin="112,191,112,20"
+                Template="{StaticResource AcceptButton}" Command="{Binding Save}"/>
     </Grid>
 </Window>
