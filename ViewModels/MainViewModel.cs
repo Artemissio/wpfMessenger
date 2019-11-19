@@ -25,9 +25,11 @@ namespace WpfMessenger.ViewModels
         private string _chatName;
 
         ObservableCollection<ChatModel> _chats;
+        ObservableCollection<MessageModel> _messages;
 
         ChatsRepository _chatsRepository = ChatsRepository.GetInstance();
         ChatUserRepository _chatUserRepository = ChatUserRepository.GetInstance();
+        MessagesRepository _messagesRepository = MessagesRepository.GetInstance();
 
         public event PropertyChangedEventHandler PropertyChanged;
         public event EventHandler Closing;
@@ -70,9 +72,17 @@ namespace WpfMessenger.ViewModels
         {
             get
             {
-                if(SelectedChat != null)
-                    return new ObservableCollection<MessageModel>(SelectedChat.Messages);
+                if (SelectedChat != null)
+                    return _messages;
                 return null;
+            }
+
+            private set
+            {
+                //Messages = new ObservableCollection<MessageModel>(_messagesRepository.GetMessages(SelectedChat));
+
+                _messages = new ObservableCollection<MessageModel>(_messagesRepository.GetMessages(SelectedChat));
+                OnPropertyChanged(nameof(SelectedChat));
             }
         }
 
@@ -115,8 +125,9 @@ namespace WpfMessenger.ViewModels
                             return;
                         }
 
-                        MessageModel message = new MessageModel(TextMessage, User);
-                        SelectedChat.Messages.Add(message);
+                        _messagesRepository.AddMessage(TextMessage, User, SelectedChat);
+
+                        Messages = new ObservableCollection<MessageModel>(_messagesRepository.GetMessages(SelectedChat));
                     }));
             }
         }

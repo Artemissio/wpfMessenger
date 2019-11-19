@@ -25,11 +25,11 @@ namespace WpfMessenger.Views
     {
         public ListOfUsersViewModel listOfUsersViewModel;
 
-        public ListOfUsersView(ChatModel chat, UserModel user)
+        public ListOfUsersView(ChatModel chat, UserModel user, List<UserModel> _users)
         {
             InitializeComponent();
 
-            listOfUsersViewModel = new ListOfUsersViewModel(chat, user);
+            listOfUsersViewModel = new ListOfUsersViewModel(chat, user, _users);
 
             DataContext = listOfUsersViewModel;
 

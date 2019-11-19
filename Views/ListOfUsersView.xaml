@@ -5,28 +5,32 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WpfMessenger.Views"
         mc:Ignorable="d"
-        Title="ListOfUsers" Height="285" Width="265" Background="#FF252424" 
+        Title="ListOfUsers" Height="340" Width="375" Background="#FF252424" ResizeMode="NoResize"
         WindowStartupLocation="CenterScreen">
     <Grid>
         <ListBox x:Name="ListOfContacts" Grid.Column="0" Margin="10,43,9.667,61" 
-            Style="{StaticResource List}" ItemsSource="{Binding Users}" SelectionChanged="ListOfContacts_SelectionChanged">
+            Style="{StaticResource List}" ItemsSource="{Binding Users, UpdateSourceTrigger=PropertyChanged}" 
+                 SelectionChanged="ListOfContacts_SelectionChanged">
             <ListBox.ItemTemplate>
                 <DataTemplate>
-                    <ListBoxItem>
-                        <StackPanel>
-                            <Label Content="{Binding Nickname}" Style="{StaticResource Field}"/>
-                        </StackPanel>
-                    </ListBoxItem>
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition></RowDefinition>
+                            <RowDefinition></RowDefinition>
+                        </Grid.RowDefinitions>
+                        <Label Grid.Row="0" Content="{Binding Fullname}" Foreground="White"/>
+                        <Label Grid.Row="1" Content="{Binding Nickname}" Foreground="White"/>
+                    </Grid>
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>
         <TextBox x:Name="tbSearch" Margin="10,10,10, 0" BorderBrush="#FF2C2C2D" 
-                 />
-        <Button x:Name="btnAccept" Content="OK" Margin="204,204,-0.333,0" Command="{Binding Accept}"
+                 Text="{Binding Searh, UpdateSourceTrigger=PropertyChanged}"/>
+        <Button x:Name="btnAccept" Content="OK" Margin="313,255,9.333,9.667" Command="{Binding Accept}"
             Template="{StaticResource OkButton}"/>
-        <Button x:Name="btnBack" Margin="10,204,212.667,13" Background="Transparent" 
+        <Button x:Name="btnBack" Margin="10,251,308.333,10" Background="Transparent" 
             BorderBrush="Transparent" Command="{Binding Back}">
-            <Image Source="/Style/back.png"/>
+            <Image Source="/Style/back.png" Height="43" Width="49"/>
         </Button>
     </Grid>
 </Window>

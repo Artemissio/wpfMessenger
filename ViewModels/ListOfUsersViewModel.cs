@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
@@ -21,6 +22,7 @@ namespace WpfMessenger.ViewModels
 
         List<UserModel> _users;
         List<UserModel> selectedUsers;
+        List<UserModel> _givenUsers;
 
         RelayCommand _accept;
         RelayCommand _back;
@@ -29,12 +31,14 @@ namespace WpfMessenger.ViewModels
 
         public event EventHandler Closing;
 
-        public ListOfUsersViewModel(ChatModel chat, UserModel user)
+        public ListOfUsersViewModel(ChatModel chat, UserModel user, List<UserModel> users)
         {
             _chat = chat;
             _user = user;
 
-            Users = chatUserRepository.GetRestUsersByChat(chat);
+            _givenUsers = users;
+
+            Users = usersRepository.GetUsers().Except(_givenUsers).ToList();
             selectedUsers = new List<UserModel>();
         }
 
@@ -53,7 +57,7 @@ namespace WpfMessenger.ViewModels
                 _search = value;
                 OnPropertyChanged(nameof(Search));
 
-                Users = chatUserRepository.GetRestUsersByChat(_chat, Search);
+                Users = usersRepository.GetUsers(Search, _user).Except(_givenUsers).ToList();
             }
         }
 

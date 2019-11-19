@@ -73,12 +73,13 @@
     <Compile Include="DBConnection\DbInitializer.cs" />
     <Compile Include="Models\ChatModel.cs" />
     <Compile Include="Models\ChatUserModel.cs" />
-    <Compile Include="Models\DeviceModel.cs" />
     <Compile Include="Models\MessageModel.cs" />
     <Compile Include="Models\UserModel.cs" />
     <Compile Include="Repositories\ChatsRepository.cs" />
     <Compile Include="Repositories\ChatUserRepository.cs" />
-    <Compile Include="Repositories\DevicesRepository.cs" />
+    <Compile Include="Repositories\GeneralRepository.cs" />
+    <Compile Include="Repositories\IRepository.cs" />
+    <Compile Include="Repositories\MessagesRepository.cs" />
     <Compile Include="Repositories\UsersRepository.cs" />
     <Compile Include="Validation\DataValidation.cs" />
     <Compile Include="ViewModels\ChatSettingsViewModel.cs" />

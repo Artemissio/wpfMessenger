@@ -28,7 +28,14 @@
                  ItemsSource="{Binding Users, UpdateSourceTrigger=PropertyChanged}">
             <ListBox.ItemTemplate>
                 <DataTemplate>
-                    <ListBoxItem Content="{Binding Nickname}" />
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition></RowDefinition>
+                            <RowDefinition></RowDefinition>
+                        </Grid.RowDefinitions>
+                        <Label Grid.Row="0" Content="{Binding Fullname}" Foreground="White"/>
+                        <Label Grid.Row="1" Content="{Binding Nickname}" Foreground="White"/>
+                    </Grid>
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>

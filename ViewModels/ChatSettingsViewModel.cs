@@ -132,20 +132,9 @@ namespace WpfMessenger.ViewModels
                             return;
                         }
 
-                        if(SelectedUser == null)
-                        {
-                            MessageBox.Show("Choose at least one user", "Warning", MessageBoxButton.OK, MessageBoxImage.Error);
-                            return;
-                        }
-
                         chatsRepository.UpdateChat(_chat.Id, Name, _user);
 
                         MessageBox.Show("Chat Is Successfully Edited", "Ok", MessageBoxButton.OK, MessageBoxImage.Information);
-
-                        MainView mainView = new MainView(ref _user);
-                        mainView.Show();
-
-                        Closing?.Invoke(this, EventArgs.Empty);
                     }));
             }
         }
@@ -210,7 +199,9 @@ namespace WpfMessenger.ViewModels
                         chatUserRepository.Remove(SelectedUser);
 
                         MessageBox.Show($"{SelectedUser.Nickname} was successfully removed", "Ok", 
-                            MessageBoxButton.OK, MessageBoxImage.Information);                  
+                            MessageBoxButton.OK, MessageBoxImage.Information);
+
+                        Users = new ObservableCollection<UserModel>(chatUserRepository.GetUsersByChat(_chat));
                     }));
             }
         }
@@ -228,7 +219,7 @@ namespace WpfMessenger.ViewModels
                             return;
                         }
 
-                        ListOfUsersView listOfUsersView = new ListOfUsersView(_chat, _user);
+                        ListOfUsersView listOfUsersView = new ListOfUsersView(_chat, _user, Users.ToList());
                         listOfUsersView.Show();
 
                         Closing?.Invoke(this, EventArgs.Empty);

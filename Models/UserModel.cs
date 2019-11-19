@@ -38,7 +38,7 @@ namespace WpfMessenger.Models
             Id = _idGenerator++;
             Name = name;
             Surname = surname;
-            Nickname = nickname;
+            Nickname = "@" + nickname;
             Number = number;
             Password = password;
             IsAdmin = admin;
