@@ -1,6 +1,8 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Linq;
 using System.Windows;
+using WpfMessenger.DBConnection;
 using WpfMessenger.Models;
 using WpfMessenger.Repositories;
 using WpfMessenger.Validation;
@@ -153,31 +155,44 @@ namespace WpfMessenger.ViewModels
                             return;
                         }
 
-                        UsersRepository repository = UsersRepository.GetInstance();
-
-                        if (repository.Exists(Nickname, Number))
+                        using (MainDataBase dataBase = new MainDataBase())
                         {
-                            MessageBox.Show("User already exists");
-                            return;
-                        }
+                            UsersRepository userRepository = new UsersRepository(dataBase);
 
-                        UserModel user = new UserModel()
-                        {
-                            Name = this.Name,
-                            Surname = this.Surname,
-                            Nickname = this.Nickname,
-                            Password = this.Password,
-                            Number = this.Number,
-                            IsAdmin = false,
-                        };
+                            //string userInfo = string.Empty;
 
-                        repository.AddUser(user);
+                            //foreach (UserModel userModel in userRepository.GetAll())
+                            //{
+                            //    userInfo += $"{ userModel.Fullname } - { userModel.Nickname} \n";
+                            //}
+                            //MessageBox.Show(userInfo);
 
-                        MessageBox.Show($"Welcome, {user.Nickname} !", "Welcome", MessageBoxButton.OK, MessageBoxImage.Information);
+                            var user = userRepository.GetAll(u => u.Nickname == Nickname || u.Number == Number).FirstOrDefault();
 
-                        MainView mainView = new MainView(ref user);
-                        mainView.Show();
-                        Closing?.Invoke(this, EventArgs.Empty);
+                            if (user != null)
+                            {
+                                MessageBox.Show("User already exists");
+                                return;
+                            }
+
+                            user = new UserModel()
+                            {
+                                Name = this.Name,
+                                Surname = this.Surname,
+                                Nickname = this.Nickname,
+                                Password = this.Password,
+                                Number = this.Number,
+                            };
+
+                            userRepository.Add(user);
+                            dataBase.SaveChanges();
+
+                            MessageBox.Show($"Welcome, {user.Nickname} !", "Welcome", MessageBoxButton.OK, MessageBoxImage.Information);
+
+                            MainView mainView = new MainView(ref user);
+                            mainView.Show();
+                            Closing?.Invoke(this, EventArgs.Empty);
+                        }                 
                     }));
             }
         }

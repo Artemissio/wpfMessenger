@@ -1,128 +1,69 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Data.Entity;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
+using WpfMessenger.DBConnection;
 using WpfMessenger.Models;
 
 namespace WpfMessenger.Repositories
 {
-    public class ChatUserRepository
+    public class ChatUserRepository : GeneralRepository<ChatUserModel>
     {
-        static ChatUserRepository _repository;
-        ChatUserModel chatUser = new ChatUserModel();
+        public ChatUserRepository(MainDataBase dataBase) : base(dataBase) { }
 
-        ChatsRepository _chatsRepository = ChatsRepository.GetInstance();
-        UsersRepository _usersRepository = UsersRepository.GetInstance();
-
-        List<ChatUserModel> _chat_users;
-
-        ChatUserRepository()
+        public override void Add(ChatUserModel entity)
         {
-            _chat_users = new List<ChatUserModel>();
+            _database.Entry(entity).State = EntityState.Added;
         }
 
-        public static ChatUserRepository GetInstance()
+        public override void Delete(ChatUserModel entity)
         {
-            if (_repository == null)
-                _repository = new ChatUserRepository();
-            return _repository;
+            _database.Entry(entity).State = EntityState.Deleted;
         }
 
-        public List<ChatUserModel> GetChatUsers()
+        public override void Edit(ChatUserModel entity)
         {
-            return _chat_users;
+            _database.Entry(entity).State = EntityState.Modified;
         }
 
-        public void Add(ChatModel chat, UserModel user)
+        public override List<ChatUserModel> GetAll()
         {
-            chatUser = new ChatUserModel(chat, user);
-            _chat_users.Add(chatUser);
+            return _database.ChatUsers.ToList();
         }
 
-        public void Remove(ChatModel chat)
+        public override List<ChatUserModel> GetAll(Expression<Func<ChatUserModel, bool>> predicate)
         {
-            chatUser = GetChatUser(chat);
-            _chat_users.Remove(chatUser);
+            return _database.ChatUsers.Where(predicate).ToList();
         }
 
-        public void Remove(UserModel user)
+        public override ChatUserModel GetById(int id)
         {
-            chatUser = GetChatUser(user);
-            _chat_users.Remove(chatUser);
+            return _database.ChatUsers.Find(id);
         }
 
-        public List<ChatUserModel> GetChatUsers(UserModel user)
+        public override void Save()
         {
-            return _chat_users.Distinct().Where(i => i.UserId == user.Id).ToList();
+            _database.SaveChanges();
         }
 
-        public List<ChatUserModel> GetChatUsers(ChatModel chat)
-        {
-            return _chat_users.Distinct().Where(i => i.ChatId == chat.Id).ToList();
-        }
+        //public List<ChatUserModel> GetRestChatUsers(ChatModel chat)
+        //{
+        //    return _chat_users.Distinct().Where(i => i.ChatId != chat.Id).ToList();
+        //}
 
-        public List<ChatUserModel> GetRestChatUsers(ChatModel chat)
-        {
-            return _chat_users.Distinct().Where(i => i.ChatId != chat.Id).ToList();
-        }
+        //public List<UserModel> GetRestUsersByChat(ChatModel chat)
+        //{
+        //    List<UserModel> users = new List<UserModel>();
 
-        ChatUserModel GetChatUser(ChatModel chat)
-        {
-            return _chat_users.FirstOrDefault(i => i.Chat == chat);
-        }
-
-        ChatUserModel GetChatUser(UserModel user)
-        {
-            return _chat_users.FirstOrDefault(i => i.User == user);
-        }
-
-        public List<ChatModel> GetChatsByUser(UserModel user)
-        {
-            List<ChatModel> chats = new List<ChatModel>();
-
-            foreach(ChatUserModel chatUser in GetChatUsers(user))
-            {
-                chats.Add(chatUser.Chat);
-            }
-
-            return chats;
-        }
-
-        public List<UserModel> GetUsersByChat(ChatModel chat)
-        {
-            List<UserModel> users = new List<UserModel>();
-
-            foreach(ChatUserModel chatUser in GetChatUsers(chat))
-            {
-                users.Add(chatUser.User);
-            }
-            return users;
-        }
-
-        public List<UserModel> GetRestUsersByChat(ChatModel chat)
-        {
-            List<UserModel> users = new List<UserModel>();
-
-            foreach (ChatUserModel chatUser in GetRestChatUsers(chat))
-            {
-                users.Add(chatUser.User);
-            }
-            return users;
-        }
-
-        public List<UserModel> GetRestUsersByChat(ChatModel chat, string search)
-        {
-            List<UserModel> users = new List<UserModel>();
-
-            foreach (ChatUserModel chatUser in GetRestChatUsers(chat))
-            {
-                users.Add(chatUser.User);
-            }
-            return users;
-            //return users.Where(u => u.Nickname.Contains(search) || u.Name.Contains(search) || u.Surname.Contains(search)).ToList();
-        }
+        //    foreach (ChatUserModel chatUser in GetRestChatUsers(chat))
+        //    {
+        //        users.Add(chatUser.User);
+        //    }
+        //    return users;
+        //}
     }
 }

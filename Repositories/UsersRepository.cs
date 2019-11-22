@@ -1,89 +1,53 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Data.Entity;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
+using WpfMessenger.DBConnection;
 using WpfMessenger.Models;
 
 namespace WpfMessenger.Repositories
 {
-    public class UsersRepository
+    public class UsersRepository : GeneralRepository<UserModel>
     {
-        static UsersRepository _repository;
+        public UsersRepository(MainDataBase database) : base(database) { }
 
-        ObservableCollection<UserModel> _users;
-
-        UsersRepository()
+        public override void Add(UserModel entity)
         {
-            _users = new ObservableCollection<UserModel>();
-
-            _users = new ObservableCollection<UserModel>() {
-                new UserModel("Artem", "Tarasenko", "098-078-9920", "artemissio", "Password1", false),
-                new UserModel("Max", "Terentiev", "000-000-0000", "maxter", "Password1", false),
-                new UserModel("Max", "Yaremenko", "000-000-0001", "rabotodatel", "Password1", false),
-                new UserModel("Misha", "Dragan", "000-000-0002", "basically_unknown", "Password1", false),
-                new UserModel("Yulia", "Koval", "000-000-0003", "yulkvl", "Password1", false),
-                new UserModel("Yana", "Koval", "000-000-0004", "ynkvl", "Password1", false),
-            };
+            _database.Entry(entity).State = EntityState.Added;
         }
 
-        public static UsersRepository GetInstance()
+        public override void Delete(UserModel entity)
         {
-            if (_repository == null)
-                _repository = new UsersRepository();
-            return _repository;
-        }
-        public UserModel GetUser(int id)
-        {
-            return _users.FirstOrDefault(u => u.Id == id);
+            _database.Entry(entity).State = EntityState.Deleted;
         }
 
-        public UserModel GetUser(string number, string password)
+        public override void Edit(UserModel entity)
         {
-            return _users.FirstOrDefault(u => u.Number == number && u.Password == password);
+            _database.Entry(entity).State = EntityState.Modified;
         }
 
-        public bool Exists(string nickname, string number)
+        public override List<UserModel> GetAll()
         {
-            return _users.Any(u => u.Nickname == nickname || u.Number == number);
+            return _database.Users.ToList();
         }
 
-        public void AddUser(UserModel user)
+        public override List<UserModel> GetAll(Expression<Func<UserModel, bool>> predicate)
         {
-            if (user != null)
-                _users.Add(user);
+            return _database.Users.Where(predicate).ToList();
         }
 
-        public void UpdateUser(int id, string nickname, string number, string password)
+        public override UserModel GetById(int id)
         {
-            UserModel user = _users.FirstOrDefault(u => u.Id == id);
-
-            user.Nickname = nickname;
-            user.Number = number;
-            user.Password = password;
+            return _database.Users.Find(id);
         }
 
-        public void RemoveUser(UserModel user)
+        public override void Save()
         {
-            if (user != null)
-                _users.Remove(user);
-        }
-
-        public ObservableCollection<UserModel> GetUsers()
-        {
-            return _users;
-        }
-
-        public IEnumerable<UserModel> GetUsers(string value, UserModel user)
-        {
-            if (string.IsNullOrEmpty(value))
-                return _users.ToList().Where(u => u != user);
-
-            return _users.ToList().Where(u => u != user &&
-                                      (u.Nickname.Contains(value)
-                                        || u.Name.Contains(value) 
-                                        || u.Surname.Contains(value)));
+            _database.SaveChanges();
         }
     }
 }

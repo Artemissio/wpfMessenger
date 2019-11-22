@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using WpfMessenger.DBConnection;
 using WpfMessenger.Models;
 using WpfMessenger.Repositories;
 using WpfMessenger.Views;
@@ -14,8 +15,8 @@ namespace WpfMessenger.ViewModels
 {
     public class ListOfUsersViewModel : INotifyPropertyChanged
     {
-        ChatUserRepository chatUserRepository = ChatUserRepository.GetInstance();
-        UsersRepository usersRepository = UsersRepository.GetInstance();
+        ChatUserRepository chatUserRepository;
+        UsersRepository usersRepository;
 
         ChatModel _chat;
         UserModel _user;
@@ -38,9 +39,45 @@ namespace WpfMessenger.ViewModels
 
             _givenUsers = users;
 
-            Users = usersRepository.GetUsers().Except(_givenUsers).ToList();
-            selectedUsers = new List<UserModel>();
+            using (MainDataBase dataBase = new MainDataBase())
+            {
+                chatUserRepository = new ChatUserRepository(dataBase);
+                usersRepository = new UsersRepository(dataBase);
+
+                //List<ChatUserModel> chatUsers = chatUserRepository.GetAll(i => i.ChatId != _chat.Id).Distinct().ToList();
+
+                //Users = new List<UserModel>();
+
+                //foreach(ChatUserModel chatUserModel in chatUsers)
+                //{
+                //    Users.Add(usersRepository.GetById((int)chatUserModel.UserId));
+                //}
+
+                Users = usersRepository.GetAll().Except(_givenUsers).ToList();
+
+                selectedUsers = new List<UserModel>();
+            }
         }
+
+        //List<UserModel> GetOtherUsers(ChatModel chat)
+        //{
+        //    List<UserModel> users = new List<UserModel>();
+
+        //    using(MainDataBase dataBase = new MainDataBase())
+        //    {
+        //        chatUserRepository = new ChatUserRepository(dataBase);
+        //        usersRepository = new UsersRepository(dataBase);
+
+        //        foreach(ChatUserModel chatUser in chatUserRepository.GetAll(i => i.ChatId == chat.Id))
+        //        {
+        //            UserModel user = usersRepository.GetAll(i => i.Id == chatUser.UserId).Distinct().FirstOrDefault();
+        //            users.Add(user);
+        //        }
+        //    }
+
+        //    return users;
+        //}
+
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -57,7 +94,7 @@ namespace WpfMessenger.ViewModels
                 _search = value;
                 OnPropertyChanged(nameof(Search));
 
-                Users = usersRepository.GetUsers(Search, _user).Except(_givenUsers).ToList();
+                Users = Users.Where(i => i.Name.Contains(Search) || i.Surname.Contains(Search) || i.Nickname.Contains(Search)).ToList();
             }
         }
 
@@ -95,15 +132,23 @@ namespace WpfMessenger.ViewModels
                             return;
                         }
 
-                        foreach (UserModel userModel in selectedUsers)
+                        using (MainDataBase dataBase = new MainDataBase())
                         {
-                            chatUserRepository.Add(_chat, userModel);
+                            foreach (UserModel userModel in selectedUsers)
+                            {
+                                chatUserRepository = new ChatUserRepository(dataBase);
+
+                                var chatUser = new ChatUserModel();
+                                chatUser.ChatId = _chat.Id;
+                                chatUser.UserId = userModel.Id;
+
+                                chatUserRepository.Add(chatUser);
+                            }
+
+                            dataBase.SaveChanges();
                         }
 
                         MessageBox.Show("Users Successfully Added", "Ok", MessageBoxButton.OK, MessageBoxImage.Information);
-
-                        ChatSettingsView chatSettingsView = new ChatSettingsView(_chat, _user);
-                        chatSettingsView.Show();
 
                         Closing?.Invoke(this, EventArgs.Empty);
                     }));
@@ -117,9 +162,6 @@ namespace WpfMessenger.ViewModels
                 return _back ??
                     (_back = new RelayCommand(obj =>
                     {
-                        ChatSettingsView chatSettingsView = new ChatSettingsView(_chat, _user);
-                        chatSettingsView.Show();
-
                         Closing?.Invoke(this, EventArgs.Empty);
                     }));
             }

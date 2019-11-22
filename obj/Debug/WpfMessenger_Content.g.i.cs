@@ -8,6 +8,6 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("style/refresh.png")]
+[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("style/user_logo.png")]
 
 

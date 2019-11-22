@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using WpfMessenger.DBConnection;
 using WpfMessenger.Models;
 using WpfMessenger.Repositories;
 using WpfMessenger.Validation;
@@ -15,9 +16,6 @@ namespace WpfMessenger.ViewModels
 {
     public class ChatSettingsViewModel : IDataErrorInfo, INotifyPropertyChanged
     {
-        ChatUserRepository chatUserRepository = ChatUserRepository.GetInstance();
-        ChatsRepository chatsRepository = ChatsRepository.GetInstance();
-
         UserModel _user;
         UserModel _selectedUser;
 
@@ -30,6 +28,13 @@ namespace WpfMessenger.ViewModels
         RelayCommand _remove;
         RelayCommand _add;
         RelayCommand _edit;
+        RelayCommand _showProfile;
+        RelayCommand _leaveChat;
+        RelayCommand _deleteChat;
+
+        ChatsRepository chatRepository;
+        UsersRepository usersRepository;
+        ChatUserRepository chatUserRepository;
 
         ObservableCollection<UserModel> _users;
 
@@ -44,13 +49,34 @@ namespace WpfMessenger.ViewModels
             _user = user;
 
             _name = _chat.Name;
+            using (MainDataBase dataBase = new MainDataBase())
+            {
+                usersRepository = new UsersRepository(dataBase);
 
-            if (_chat.Admin == _user)
-                _previousAdmin = _user;
-            else
-                _previousAdmin = _chat.Admin;
+                if (_chat.AdminID == _user.Id)
+                    _previousAdmin = _user;
+                else
+                    _previousAdmin = usersRepository.GetById(_chat.AdminID);
 
-            _users = new ObservableCollection<UserModel>(chatUserRepository.GetUsersByChat(_chat));
+                Users = new ObservableCollection<UserModel>(GetUsersByChat(_chat));
+            }
+        }
+
+        List<UserModel> GetUsersByChat(ChatModel chat)
+        {
+            List<UserModel> users = new List<UserModel>();
+
+            using (MainDataBase dataBase = new MainDataBase())
+            {
+                chatUserRepository = new ChatUserRepository(dataBase);
+                usersRepository = new UsersRepository(dataBase);
+
+                foreach (ChatUserModel chatUserModel in chatUserRepository.GetAll(i => i.ChatId == chat.Id))
+                {
+                    users.Add(usersRepository.GetById((int)chatUserModel.UserId));
+                }
+            }
+            return users;
         }
 
         public string this[string columnName]
@@ -76,6 +102,7 @@ namespace WpfMessenger.ViewModels
             get { return this[string.Empty]; }
         }
 
+        #region PropertyChanged
         public event PropertyChangedEventHandler PropertyChanged;
 
         public void OnPropertyChanged(string prop)
@@ -112,7 +139,9 @@ namespace WpfMessenger.ViewModels
                 OnPropertyChanged(nameof(Users));
             }
         }
+        #endregion
 
+        #region RelayCommands
         public RelayCommand Edit
         {
             get
@@ -120,7 +149,7 @@ namespace WpfMessenger.ViewModels
                 return _edit ??
                     (_edit = new RelayCommand(o =>
                     {
-                        if (_chat.Admin != _user)
+                        if (_chat.AdminID != _user.Id)
                         {
                             MessageBox.Show("You are not admin", "Warning", MessageBoxButton.OK, MessageBoxImage.Error);
                             return;
@@ -132,9 +161,16 @@ namespace WpfMessenger.ViewModels
                             return;
                         }
 
-                        chatsRepository.UpdateChat(_chat.Id, Name, _user);
+                        _chat.Name = Name;
 
-                        MessageBox.Show("Chat Is Successfully Edited", "Ok", MessageBoxButton.OK, MessageBoxImage.Information);
+                        using (MainDataBase dataBase = new MainDataBase())
+                        {
+                            chatRepository = new ChatsRepository(dataBase);
+
+                            chatRepository.Edit(_chat);
+                            dataBase.SaveChanges();
+                        }
+                        MessageBox.Show("Chat Is Successfully Renamed", "Ok", MessageBoxButton.OK, MessageBoxImage.Information);
                     }));
             }
         }
@@ -146,25 +182,33 @@ namespace WpfMessenger.ViewModels
                 return _makeAdmin ??
                     (_makeAdmin = new RelayCommand(o =>
                     {
-                        if(_chat.Admin != _user)
-                        {
-                            MessageBox.Show("You are not admin", "Warning", MessageBoxButton.OK, MessageBoxImage.Error);
-                            return;
-                        }
-
                         if (SelectedUser == null)
                         {
                             MessageBox.Show("Choose at least one user", "Warning", MessageBoxButton.OK, MessageBoxImage.Error);
                             return;
                         }
 
-                        if (SelectedUser == _user)
+                        if (_chat.AdminID != _user.Id)
                         {
-                            MessageBox.Show("You are already an admin", "Warning", MessageBoxButton.OK, MessageBoxImage.Information);
+                            MessageBox.Show("You are not admin", "Warning", MessageBoxButton.OK, MessageBoxImage.Error);
                             return;
                         }
 
-                        chatsRepository.UpdateChat(_chat.Id, Name, SelectedUser);
+                        if (_chat.AdminID == SelectedUser.Id)
+                        {
+                            MessageBox.Show("You are already an admin", " ", MessageBoxButton.OK, MessageBoxImage.Information);
+                            return;
+                        }                     
+
+                        using (MainDataBase dataBase = new MainDataBase())
+                        {
+                            chatRepository = new ChatsRepository(dataBase);
+
+                            _chat.AdminID = SelectedUser.Id;
+
+                            chatRepository.Edit(_chat);
+                            dataBase.SaveChanges();
+                        }
 
                         MessageBox.Show($"{SelectedUser.Nickname} Is Now Admin", "Ok", MessageBoxButton.OK, MessageBoxImage.Information);
                     }));
@@ -178,30 +222,40 @@ namespace WpfMessenger.ViewModels
                 return _remove ??
                     (_remove = new RelayCommand(o =>
                     {
-                        if (_chat.Admin != _user)
-                        {
-                            MessageBox.Show("You are not admin", "Warning", MessageBoxButton.OK, MessageBoxImage.Error);
-                            return;
-                        }
-
                         if (SelectedUser == null)
                         {
                             MessageBox.Show("Choose at least one user", "Warning", MessageBoxButton.OK, MessageBoxImage.Error);
                             return;
                         }
 
-                        if (SelectedUser == _user)
+                        if (_chat.AdminID != _user.Id)
+                        {
+                            MessageBox.Show("You are not admin", "Warning", MessageBoxButton.OK, MessageBoxImage.Error);
+                            return;
+                        }                       
+
+                        if (SelectedUser.Id == _user.Id)
                         {
                             MessageBox.Show("You cant remove yourself", "Warning", MessageBoxButton.OK, MessageBoxImage.Error);
                             return;
                         }
 
-                        chatUserRepository.Remove(SelectedUser);
+                        using (MainDataBase dataBase = new MainDataBase())
+                        {
+                            chatRepository = new ChatsRepository(dataBase);
+                            chatUserRepository = new ChatUserRepository(dataBase);
 
-                        MessageBox.Show($"{SelectedUser.Nickname} was successfully removed", "Ok", 
-                            MessageBoxButton.OK, MessageBoxImage.Information);
+                            ChatUserModel chatUserModel = chatUserRepository.GetAll(i => i.ChatId == _chat.Id &&
+                                                                                     i.UserId == SelectedUser.Id).FirstOrDefault();
 
-                        Users = new ObservableCollection<UserModel>(chatUserRepository.GetUsersByChat(_chat));
+                            chatUserRepository.Delete(chatUserModel);
+                            dataBase.SaveChanges();
+
+                            MessageBox.Show($"{SelectedUser.Nickname} was successfully removed", "Ok",
+                                MessageBoxButton.OK, MessageBoxImage.Information);
+
+                            Users = new ObservableCollection<UserModel>(GetUsersByChat(_chat));
+                        }
                     }));
             }
         }
@@ -213,14 +267,113 @@ namespace WpfMessenger.ViewModels
                 return _add ??
                     (_add = new RelayCommand(o =>
                     {
-                        if (_chat.Admin != _user)
+                        if (_chat.AdminID != _user.Id)
                         {
                             MessageBox.Show("You are not admin", "Warning", MessageBoxButton.OK, MessageBoxImage.Error);
                             return;
                         }
 
                         ListOfUsersView listOfUsersView = new ListOfUsersView(_chat, _user, Users.ToList());
-                        listOfUsersView.Show();
+                        listOfUsersView.ShowDialog();
+
+                        Users = new ObservableCollection<UserModel>(GetUsersByChat(_chat));
+                    }));
+            }
+        }
+
+        public RelayCommand ShowProfile
+        {
+            get
+            {
+                return _showProfile ??
+                    (_showProfile = new RelayCommand(o =>
+                    {
+                        if(SelectedUser == null)
+                        {
+                            MessageBox.Show("Choose user", "Warning", MessageBoxButton.OK, MessageBoxImage.Error);
+                            return;
+                        }
+
+                        UserProfile userProfile = new UserProfile(SelectedUser);
+                        userProfile.ShowDialog();
+                    }));
+            }
+        }
+
+        public RelayCommand LeaveChat
+        {
+            get
+            {
+                return _leaveChat ??
+                    (_leaveChat = new RelayCommand(o =>
+                    {
+                        using (MainDataBase dataBase = new MainDataBase())
+                        {
+                            if (_chat.AdminID == _user.Id)
+                            {
+                                MessageBox.Show("You can`t leave chat if you are its admin.\n Make somebody else Admin and then leave", 
+                                                "Warning", MessageBoxButton.OK, MessageBoxImage.Error);
+                                return;
+                            }
+
+                            chatUserRepository = new ChatUserRepository(dataBase);
+
+                            ChatUserModel chatUserModel = chatUserRepository.GetAll(i => i.ChatId == _chat.Id && 
+                                                                                    i.UserId == _user.Id).FirstOrDefault();
+
+                            chatUserRepository.Delete(chatUserModel);
+                            dataBase.SaveChanges();
+                        }
+                        Closing?.Invoke(this, EventArgs.Empty);
+                    }));
+            }
+        }
+
+        public RelayCommand DeleteChat
+        {
+            get
+            {
+                return _deleteChat ??
+                    (_deleteChat = new RelayCommand(o =>
+                    {
+                        if (_chat.AdminID != _user.Id)
+                        {
+                            MessageBox.Show("You are not admin", "Warning", MessageBoxButton.OK, MessageBoxImage.Error);
+                            return;
+                        }
+
+                        using(MainDataBase dataBase = new MainDataBase())
+                        {                 
+                            chatUserRepository = new ChatUserRepository(dataBase);
+
+                            foreach (ChatUserModel chatUserModel in chatUserRepository.GetAll(i => i.ChatId == _chat.Id))
+                            {
+                                chatUserRepository.Delete(chatUserModel);
+                                dataBase.SaveChanges();
+                            }
+                        }
+
+                        using(MainDataBase context = new MainDataBase())
+                        {
+                            MessagesRepository messagesRepository = new MessagesRepository(context);
+
+                            foreach (MessageModel messageModel in messagesRepository.GetAll(i => i.ChatID == _chat.Id))
+                            {
+                                messagesRepository.Delete(messageModel);
+                                context.SaveChanges();
+                            }
+                        }
+
+                        using(MainDataBase main = new MainDataBase())
+                        {
+                            chatRepository = new ChatsRepository(main);
+
+                            ChatModel chat = chatRepository.GetById(_chat.Id);
+
+                            chatRepository.Delete(chat);
+                            main.SaveChanges();
+                        }
+
 
                         Closing?.Invoke(this, EventArgs.Empty);
                     }));
@@ -234,12 +387,10 @@ namespace WpfMessenger.ViewModels
                 return _back ??
                     (_back = new RelayCommand(obj =>
                     {
-                        MainView mainView = new MainView(ref _user);
-                        mainView.Show();
-
                         Closing?.Invoke(this, EventArgs.Empty);
                     }));
             }
         }
+        #endregion
     }
 }

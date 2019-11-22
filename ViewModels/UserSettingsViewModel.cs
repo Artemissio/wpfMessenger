@@ -1,6 +1,8 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Linq;
 using System.Windows;
+using WpfMessenger.DBConnection;
 using WpfMessenger.Models;
 using WpfMessenger.Repositories;
 using WpfMessenger.Validation;
@@ -122,23 +124,52 @@ namespace WpfMessenger.ViewModels
                             return;
                         }
 
-                        UsersRepository repository = UsersRepository.GetInstance();
-
-                        if (_previousNickname != _nickname || _previousNumber != _number)
+                        using(MainDataBase dataBase = new MainDataBase())
                         {
-                            if (repository.Exists(Nickname, Number))
+                            UsersRepository repository = new UsersRepository(dataBase);
+
+                            if(_previousNickname != Nickname)
                             {
-                                MessageBox.Show("User already exists");
-                                return;
+                                var user = repository.GetAll(u => u.Nickname == Nickname).FirstOrDefault();
+
+                                if (user != null)
+                                {
+                                    MessageBox.Show("User already exists");
+                                    return;
+                                }
                             }
+
+                            if (_previousNumber != Number)
+                            {
+                                var user = repository.GetAll(u => u.Number == Number).FirstOrDefault();
+
+                                if (user != null)
+                                {
+                                    MessageBox.Show("User already exists");
+                                    return;
+                                }
+                            }
+
+                            if (_previousNickname != _nickname && _previousNumber != _number)
+                            {
+                                var user = repository.GetAll(u => u.Nickname == Nickname || u.Number == Number).FirstOrDefault();
+
+                                if (user != null)
+                                {
+                                    MessageBox.Show("User already exists");
+                                    return;
+                                }
+                            }
+
+                            user.Nickname = Nickname;
+                            user.Number = Number;
+                            user.Password = Password;
+
+                            repository.Edit(user);
+                            dataBase.SaveChanges();
                         }
 
-                        repository.UpdateUser(user.Id, Nickname, Number, Password); 
-
                         MessageBox.Show("Data Is Successfully Changed", "Ok", MessageBoxButton.OK, MessageBoxImage.Information);
-
-                        UserInfoView userInfoView = new UserInfoView(user);
-                        userInfoView.Show();
 
                         Closing?.Invoke(this, EventArgs.Empty);
                     }));
@@ -152,9 +183,6 @@ namespace WpfMessenger.ViewModels
                 return _back ??
                     (_back = new RelayCommand(obj =>
                     {
-                        UserInfoView userInfoView = new UserInfoView(user);
-                        userInfoView.Show();
-
                         Closing?.Invoke(this, EventArgs.Empty);
                     }));
             }

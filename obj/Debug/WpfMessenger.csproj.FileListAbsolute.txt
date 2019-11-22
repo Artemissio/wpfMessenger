@@ -69,3 +69,10 @@ C:\Users\xiaomi\Documents\.NET Projects\WpfMessenger — MVVM\obj\Debug\WpfMesse
 C:\Users\xiaomi\Documents\.NET Projects\WpfMessenger — MVVM\obj\Debug\WpfMessenger.csproj.GenerateResource.cache
 C:\Users\xiaomi\Documents\.NET Projects\WpfMessenger — MVVM\obj\Debug\WpfMessenger.csproj.CoreCompileInputs.cache
 C:\Users\xiaomi\Documents\.NET Projects\WpfMessenger — MVVM\obj\Debug\WpfMessenger.csproj.CopyComplete
+C:\Users\xiaomi\Documents\.NET Projects\WpfMessenger — MVVM\obj\Debug\WpfMessenger.Migrations.ListsAdded.resources
+C:\Users\xiaomi\Documents\.NET Projects\WpfMessenger — MVVM\obj\Debug\WpfMessenger.Migrations.AddedSettersToMessage.resources
+C:\Users\xiaomi\Documents\.NET Projects\WpfMessenger — MVVM\obj\Debug\WpfMessenger.Migrations.ChangedSetters.resources
+C:\Users\xiaomi\Documents\.NET Projects\WpfMessenger — MVVM\obj\Debug\WpfMessenger.Migrations.ChatUserChange.resources
+C:\Users\xiaomi\Documents\.NET Projects\WpfMessenger — MVVM\obj\Debug\WpfMessenger.Migrations.DeletedSettersFromChatUserModel.resources
+C:\Users\xiaomi\Documents\.NET Projects\WpfMessenger — MVVM\obj\Debug\Views\UserProfile.g.cs
+C:\Users\xiaomi\Documents\.NET Projects\WpfMessenger — MVVM\obj\Debug\Views\UserProfile.baml

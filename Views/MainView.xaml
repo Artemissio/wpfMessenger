@@ -48,18 +48,21 @@
 
         <ListBox x:Name="ChatWindow" Grid.Row="1" Grid.Column="2" Grid.ColumnSpan="2" 
                  Background="#FF333131" BorderBrush="#FF333131" Foreground="White"
-                 ItemsSource="{Binding Messages, UpdateSourceTrigger=PropertyChanged}">
+                 ItemsSource="{Binding MessageViewModels, UpdateSourceTrigger=PropertyChanged}">
             <ListBox.ItemTemplate>
                 <DataTemplate>
-                    <Grid>
+                    <Grid Style="{StaticResource Message}">
                         <Grid.RowDefinitions>
-                            <RowDefinition></RowDefinition>
-                            <RowDefinition></RowDefinition>
-                            <RowDefinition></RowDefinition>
+                            <RowDefinition/>
+                            <RowDefinition/>
                         </Grid.RowDefinitions>
-                        <Label Grid.Row="0" Content="{Binding Sender.FullName}"/>
-                        <Label Grid.Row="1" Content="{Binding Text}"/>
-                        <Label Grid.Row="2" Content="{Binding Sent}"/>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <Label Grid.Row="0" Grid.Column="0" Content="{Binding Fullname}" Foreground="#FF5B82E0"/>
+                        <Label Grid.Row="0" Grid.Column="1" Content="{Binding Sent}" Foreground="White"/>
+                        <Label Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Content="{Binding Text}" Foreground="White"/>
                     </Grid>
                 </DataTemplate>
             </ListBox.ItemTemplate>

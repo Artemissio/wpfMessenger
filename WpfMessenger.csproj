@@ -47,6 +47,7 @@
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Data.Entity" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -69,8 +70,29 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="DBConnection\MainDataBase.cs" />
     <Compile Include="DBConnection\DbInitializer.cs" />
+    <Compile Include="DBConnection\MainDataBase.cs" />
+    <Compile Include="Migrations\201911210607274_ListsAdded.cs" />
+    <Compile Include="Migrations\201911210607274_ListsAdded.designer.cs">
+      <DependentUpon>201911210607274_ListsAdded.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201911210631025_AddedSettersToMessage.cs" />
+    <Compile Include="Migrations\201911210631025_AddedSettersToMessage.designer.cs">
+      <DependentUpon>201911210631025_AddedSettersToMessage.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201911210635371_ChangedSetters.cs" />
+    <Compile Include="Migrations\201911210635371_ChangedSetters.designer.cs">
+      <DependentUpon>201911210635371_ChangedSetters.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201911210642236_ChatUserChange.cs" />
+    <Compile Include="Migrations\201911210642236_ChatUserChange.designer.cs">
+      <DependentUpon>201911210642236_ChatUserChange.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201911211250084_DeletedSettersFromChatUserModel.cs" />
+    <Compile Include="Migrations\201911211250084_DeletedSettersFromChatUserModel.designer.cs">
+      <DependentUpon>201911211250084_DeletedSettersFromChatUserModel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\ChatModel.cs" />
     <Compile Include="Models\ChatUserModel.cs" />
     <Compile Include="Models\MessageModel.cs" />
@@ -86,10 +108,12 @@
     <Compile Include="ViewModels\ListOfUsersViewModel.cs" />
     <Compile Include="ViewModels\LoginViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
+    <Compile Include="ViewModels\MessageViewModel.cs" />
     <Compile Include="ViewModels\NewChatViewModel.cs" />
     <Compile Include="ViewModels\RegistrationViewModel.cs" />
     <Compile Include="ViewModels\RelayCommand.cs" />
     <Compile Include="ViewModels\UserInfoViewModel.cs" />
+    <Compile Include="ViewModels\UserProfileViewModel.cs" />
     <Compile Include="ViewModels\UserSettingsViewModel.cs" />
     <Compile Include="Views\ChatSettingsView.xaml.cs">
       <DependentUpon>ChatSettingsView.xaml</DependentUpon>
@@ -115,6 +139,9 @@
     <Compile Include="Views\UserInfoView.xaml.cs">
       <DependentUpon>UserInfoView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\UserProfile.xaml.cs">
+      <DependentUpon>UserProfile.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\UserSettingsView.xaml.cs">
       <DependentUpon>UserSettingsView.xaml</DependentUpon>
     </Compile>
@@ -133,6 +160,21 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <EmbeddedResource Include="Migrations\201911210607274_ListsAdded.resx">
+      <DependentUpon>201911210607274_ListsAdded.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201911210631025_AddedSettersToMessage.resx">
+      <DependentUpon>201911210631025_AddedSettersToMessage.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201911210635371_ChangedSetters.resx">
+      <DependentUpon>201911210635371_ChangedSetters.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201911210642236_ChatUserChange.resx">
+      <DependentUpon>201911210642236_ChatUserChange.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201911211250084_DeletedSettersFromChatUserModel.resx">
+      <DependentUpon>201911211250084_DeletedSettersFromChatUserModel.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -183,6 +225,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\UserProfile.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\UserSettingsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -202,6 +248,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Style\points.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Style\user_logo.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

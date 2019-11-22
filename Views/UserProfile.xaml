@@ -1,0 +1,29 @@
+﻿<Window x:Class="WpfMessenger.Views.UserProfile"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WpfMessenger.Views"
+        mc:Ignorable="d"
+        Title="UserProfile" Height="248.667" Width="323.217" Background="#FF252424" 
+        ResizeMode="NoResize" WindowStartupLocation="CenterScreen">
+    <Grid>
+        <Label Margin="197,37,0,0" Height="29" Content="{Binding Fullname}"
+            Style="{StaticResource Field}" Width="110"/>
+        <Label Margin="91,119,0,0" Height="29" Content="{Binding Number}"
+            Style="{StaticResource Field}" Width="216"/>
+        <Label Margin="91,164,0,0" Height="29" Content="{Binding Nickname}"
+            Style="{StaticResource Field}" Width="216"/>
+        <Image HorizontalAlignment="Left" Height="90" Margin="10,10,0,0" VerticalAlignment="Top" Width="90" 
+               Source="/Style/user_logo.png"/>
+        <Label Margin="118,37,0,0" Height="29" Content="Fullname: "
+            Style="{StaticResource Field}" Width="79"/>
+        <Label Margin="10,119,0,0" Height="29" Content="Number: "
+            Style="{StaticResource Field}" Width="65"/>
+        <Label Margin="10,164,0,0" Height="29" Content="Nickname: "
+            Style="{StaticResource Field}" Width="76"/>
+        <!--<Button x:Name="btnSendMessage" Content="Send Message" Margin="10,209,0,0" Style="{StaticResource UserInfoBtn}" Width="297"
+            Command="{Binding SendMessage}" Height="47"/>-->
+
+    </Grid>
+</Window>

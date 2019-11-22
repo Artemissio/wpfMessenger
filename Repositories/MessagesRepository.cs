@@ -1,53 +1,52 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
+using WpfMessenger.DBConnection;
 using WpfMessenger.Models;
 
 namespace WpfMessenger.Repositories
 {
-    public class MessagesRepository
+    public class MessagesRepository : GeneralRepository<MessageModel>
     {
-        static MessagesRepository _repository;
+        public MessagesRepository(MainDataBase dataBase) : base(dataBase) { }
 
-        List<MessageModel> _messages;
-
-        MessagesRepository()
+        public override void Add(MessageModel entity)
         {
-            _messages = new List<MessageModel>();
+            _database.Entry(entity).State = EntityState.Added;
         }
 
-        public static MessagesRepository GetInstance()
+        public override void Delete(MessageModel entity)
         {
-            if (_repository == null)
-                _repository = new MessagesRepository();
-            return _repository;
+            _database.Entry(entity).State = EntityState.Deleted;
         }
 
-        public List<MessageModel> GetMessages()
+        public override void Edit(MessageModel entity)
         {
-            return _messages;
+            _database.Entry(entity).State = EntityState.Modified;
         }
 
-        public List<MessageModel> GetMessages(ChatModel chat)
+        public override List<MessageModel> GetAll()
         {
-            return _messages.Where(m => m.ChatID == chat.Id).ToList();
+            return _database.Messages.ToList();
         }
 
-        public void AddMessage(string text, UserModel user, ChatModel chat)
+        public override List<MessageModel> GetAll(Expression<Func<MessageModel, bool>> predicate)
         {
-            if(!string.IsNullOrEmpty(text) && user != null && chat != null)
-            {
-                MessageModel message = new MessageModel(text, user, chat);
-                _messages.Add(message);
-            }
+            return _database.Messages.Where(predicate).ToList();
         }
 
-        public void RemoveMessage(ChatModel chat, MessageModel message)
+        public override MessageModel GetById(int id)
         {
-            if (chat != null)
-                _messages.Remove(message);
+            return _database.Messages.Find(id);
+        }
+
+        public override void Save()
+        {
+            _database.SaveChanges();
         }
     }
 }

@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using WpfMessenger.DBConnection;
 using WpfMessenger.Models;
 using WpfMessenger.Repositories;
 using WpfMessenger.Validation;
@@ -16,17 +17,17 @@ namespace WpfMessenger.ViewModels
 {
     public class NewChatViewModel : IDataErrorInfo, INotifyPropertyChanged
     {
-        ChatsRepository chatsRepository = ChatsRepository.GetInstance();
-        ChatUserRepository chatUserRepository = ChatUserRepository.GetInstance();
-        UsersRepository usersRepository = UsersRepository.GetInstance();
+        ChatsRepository chatsRepository;
+        ChatUserRepository chatUserRepository;
+        UsersRepository usersRepository;
 
         UserModel user;
 
         RelayCommand _accept;
         RelayCommand _back;
 
-        List<UserModel> _users;
-        List<UserModel> selectedUsers;
+        ObservableCollection<UserModel> _users;
+        ObservableCollection<UserModel> selectedUsers;
 
         private string _name;
         private string _search;
@@ -38,8 +39,13 @@ namespace WpfMessenger.ViewModels
         {
             this.user = user;
 
-            Users = usersRepository.GetUsers(Search, user).ToList();
-            selectedUsers = new List<UserModel>();
+            using (MainDataBase dataBase = new MainDataBase())
+            {
+                usersRepository = new UsersRepository(dataBase);
+
+                Users = new ObservableCollection<UserModel>(usersRepository.GetAll(i => i.Id != user.Id));
+                selectedUsers = new ObservableCollection<UserModel>();
+            }
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -89,11 +95,18 @@ namespace WpfMessenger.ViewModels
                 _search = value;
                 OnPropertyChanged(nameof(Search));
 
-                Users = usersRepository.GetUsers(Search, user).ToList();
+                using (MainDataBase dataBase = new MainDataBase())
+                {
+                    usersRepository = new UsersRepository(dataBase);
+                    Users = new ObservableCollection<UserModel>(usersRepository.GetAll(i => (i.Name.Contains(Search)
+                                                                                            || i.Surname.Contains(Search)
+                                                                                            || i.Nickname.Contains(Search))
+                                                                                            && i.Id != user.Id));
+                }
             }
         }
 
-        public List<UserModel> Users
+        public ObservableCollection<UserModel> Users
         {
             get { return _users; }
             set
@@ -103,7 +116,7 @@ namespace WpfMessenger.ViewModels
             }
         }
 
-        public List<UserModel> SelectedUsers
+        public ObservableCollection<UserModel> SelectedUsers
         {
             get { return selectedUsers; }
             set
@@ -132,21 +145,67 @@ namespace WpfMessenger.ViewModels
                             return;
                         }
 
-                        ChatModel chat = new ChatModel(Name, user);
-
-                        chatsRepository.AddChat(chat);
-
-                        chatUserRepository.Add(chat,user);
-
-                        foreach (UserModel userModel in selectedUsers)
+                        using (MainDataBase dataBase = new MainDataBase())
                         {
-                            chatUserRepository.Add(chat, userModel);
-                        }                                  
+                            chatsRepository = new ChatsRepository(dataBase);
+                            chatUserRepository = new ChatUserRepository(dataBase);
+
+                            ChatModel chat = new ChatModel();
+                            chat.Name = Name;
+                            chat.AdminID = user.Id;
+
+                            //MessageBox.Show(chat.Name + " " + chat.AdminID); // ---------
+
+                            //string chatUserResult = string.Empty;
+                            //string chatResult = string.Empty;
+
+                            chatsRepository.Add(chat);
+
+                            ChatUserModel chatUser = new ChatUserModel();
+                            chatUser.ChatId = chat.Id;
+                            chatUser.UserId = user.Id;
+
+                            //MessageBox.Show("Chat ID: " + chatUser.ChatId + " - user ID: " + chatUser.UserId); // ---------------
+
+                            chatUserRepository.Add(chatUser); // added myself to ChatUsers
+
+                            //dataBase.SaveChanges();
+
+                            //chatUserResult = string.Empty;
+
+                            //foreach (ChatUserModel chatUserModel in chatUserRepository.GetAll()) // displays me
+                            //{
+                            //    chatUserResult += $"Chat ID: {chatUserModel.ChatId} - User ID: {chatUserModel.UserId}\n";
+                            //}
+
+                            //MessageBox.Show(chatUserResult);
+
+                            foreach (UserModel userModel in SelectedUsers)
+                            {
+                                chatUser = new ChatUserModel();
+                                chatUser.ChatId = chat.Id;
+                                chatUser.UserId = userModel.Id;
+
+                                chatUserRepository.Add(chatUser); // added others to ChatUsers
+                            }
+
+                            dataBase.SaveChanges();
+                        }
+                        //chatUserResult = string.Empty;
+
+                        //foreach (ChatUserModel chatUserModel in chatUserRepository.GetAll()) // displays all chat users (me + others)
+                        //{
+                        //    chatUserResult += $"Chat ID: {chatUserModel.ChatId} - User ID: {chatUserModel.UserId}\n";
+                        //}
+
+                        //foreach (ChatModel chatModel in chatsRepository.GetAll()) // displays all chats (1 for now)
+                        //{
+                        //    chatResult += $"Chat Name: {chatModel.Name} - Admin ID: {chatModel.AdminID}\n";
+                        //}
+
+                        //MessageBox.Show(chatResult);
 
                         MessageBox.Show("Chat Is Successfully Created", "Ok", MessageBoxButton.OK, MessageBoxImage.Information);
-
-                        MainView mainView = new MainView(ref user);
-                        mainView.Show();
 
                         Closing?.Invoke(this, EventArgs.Empty);
                     }));
@@ -160,9 +219,6 @@ namespace WpfMessenger.ViewModels
                 return _back ??
                     (_back = new RelayCommand(obj =>
                     {
-                        UserInfoView userInfoView = new UserInfoView(user);
-                        userInfoView.Show();
-
                         Closing?.Invoke(this, EventArgs.Empty);
                     }));
             }

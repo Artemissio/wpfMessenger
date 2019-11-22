@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Linq;
 using System.Windows;
+using WpfMessenger.DBConnection;
 using WpfMessenger.Models;
 using WpfMessenger.Repositories;
 using WpfMessenger.Views;
@@ -17,19 +19,18 @@ namespace WpfMessenger.ViewModels
         RelayCommand _send;
         RelayCommand _userInfo;
         RelayCommand _chatSettings;
-        RelayCommand _refresh;
 
         ChatModel _selectedChat;
 
         private string _search;
-        private string _chatName;
 
-        ObservableCollection<ChatModel> _chats;
-        ObservableCollection<MessageModel> _messages;
+        List<ChatModel> _chats;
+        List<MessageViewModel> messageViewModels;
 
-        ChatsRepository _chatsRepository = ChatsRepository.GetInstance();
-        ChatUserRepository _chatUserRepository = ChatUserRepository.GetInstance();
-        MessagesRepository _messagesRepository = MessagesRepository.GetInstance();
+        ChatsRepository chatRepository;
+        ChatUserRepository chatUserRepository;
+        MessagesRepository messagesRepository;
+        UsersRepository usersRepository;
 
         public event PropertyChangedEventHandler PropertyChanged;
         public event EventHandler Closing;
@@ -42,18 +43,93 @@ namespace WpfMessenger.ViewModels
         {
             User = user;
 
-            Chats = new ObservableCollection<ChatModel>(_chatUserRepository.GetChatsByUser(User));
+            ReloadChats();
+        }
+
+        List<ChatModel> GetChatsByUser(UserModel user)
+        {
+            List<ChatModel> chats  = new List<ChatModel>();
+
+            using (MainDataBase dataBase = new MainDataBase())
+            {
+                chatUserRepository = new ChatUserRepository(dataBase);
+                chatRepository = new ChatsRepository(dataBase);
+
+                foreach (ChatUserModel chatUserModel in chatUserRepository.GetAll(i => i.UserId == user.Id))
+                {
+                    chats.Add(chatRepository.GetById((int)chatUserModel.ChatId));
+                }
+            }
+            return chats;
+        }
+        void ReloadChats()
+        {
+            using (MainDataBase dataBase = new MainDataBase())
+            {
+                Chats = GetChatsByUser(User);
+
+                if (Chats.Count > 0)
+                {
+                    SelectedChat = Chats[0];
+
+                    MessageViewModels = new List<MessageViewModel>();
+
+                    messagesRepository = new MessagesRepository(dataBase);
+                    usersRepository = new UsersRepository(dataBase);
+
+                    foreach (MessageModel model in messagesRepository.GetAll(i => i.ChatID == SelectedChat.Id))
+                    {
+                        MessageViewModels.Add(new MessageViewModel()
+                        {
+                            Fullname = usersRepository.GetById((int)model.SenderID).Fullname,
+                            Sent = model.Sent,
+                            Text = model.Text
+                        });
+                    }
+                }
+            }
+        }
+        void ReloadMessages()
+        {
+            using (MainDataBase dataBase = new MainDataBase())
+            {
+                messagesRepository = new MessagesRepository(dataBase);
+                usersRepository = new UsersRepository(dataBase);
+
+                MessageViewModels = new List<MessageViewModel>();
+
+                foreach (MessageModel model in messagesRepository.GetAll(i => i.ChatID == SelectedChat.Id))
+                {
+                    MessageViewModels.Add(new MessageViewModel()
+                    {
+                        Fullname = usersRepository.GetById((int)model.SenderID).Fullname,
+                        Sent = model.Sent,
+                        Text = model.Text
+                    });
+                }
+            }
         }
 
         public string ChatName { get; private set; }
+        public string TextMessage { get; set; }
 
-        public ObservableCollection<ChatModel> Chats
+        public List<ChatModel> Chats
         {
             get { return _chats; }
             set
             {
-                _chats = new ObservableCollection<ChatModel>(_chatUserRepository.GetChatsByUser(User));
+                _chats = value;
                 OnPropertyChanged(nameof(Chats));
+            }
+        }
+
+        public List<MessageViewModel> MessageViewModels
+        {
+            get { return messageViewModels; }
+            set
+            {
+                messageViewModels = value;
+                OnPropertyChanged(nameof(MessageViewModels));
             }
         }
 
@@ -63,30 +139,16 @@ namespace WpfMessenger.ViewModels
             set
             {
                 _selectedChat = value;
-                ChatName = _selectedChat.Name;
+                if (_selectedChat != null)
+                {
+                    ChatName = _selectedChat.Name;
+
+                    ReloadMessages();
+                }
+                    
                 OnPropertyChanged(nameof(SelectedChat));
             }
         }
-
-        public ObservableCollection<MessageModel> Messages
-        {
-            get
-            {
-                if (SelectedChat != null)
-                    return _messages;
-                return null;
-            }
-
-            private set
-            {
-                //Messages = new ObservableCollection<MessageModel>(_messagesRepository.GetMessages(SelectedChat));
-
-                _messages = new ObservableCollection<MessageModel>(_messagesRepository.GetMessages(SelectedChat));
-                OnPropertyChanged(nameof(SelectedChat));
-            }
-        }
-
-        public string TextMessage { get; set; }
 
         public string Search
         {
@@ -95,20 +157,10 @@ namespace WpfMessenger.ViewModels
             {
                 _search = value;
                 OnPropertyChanged(nameof(Search));
-
-                Chats = new ObservableCollection<ChatModel>(_chatsRepository.GetChats(_search));
-            }
-        }
-
-        public RelayCommand Refresh
-        {
-            get
-            {
-                return _refresh ??
-                    (_refresh = new RelayCommand(o =>
-                    {
-                        Chats = new ObservableCollection<ChatModel>(_chatUserRepository.GetChatsByUser(User));
-                    }));
+                using (MainDataBase dataBase = new MainDataBase())
+                { 
+                    Chats = GetChatsByUser(User).Where(i => i.Name.Contains(Search)).ToList();
+                }
             }
         }
 
@@ -125,9 +177,28 @@ namespace WpfMessenger.ViewModels
                             return;
                         }
 
-                        _messagesRepository.AddMessage(TextMessage, User, SelectedChat);
+                        if(string.IsNullOrEmpty(TextMessage))
+                        {
+                            MessageBox.Show("Message Can`t Be Empty");
+                            return;
+                        }                     
 
-                        Messages = new ObservableCollection<MessageModel>(_messagesRepository.GetMessages(SelectedChat));
+                        using (MainDataBase dataBase = new MainDataBase())
+                        {
+                            messagesRepository = new MessagesRepository(dataBase);
+                            usersRepository = new UsersRepository(dataBase);
+
+                            MessageModel message = new MessageModel();
+                            message.ChatID = SelectedChat.Id;
+                            message.SenderID = User.Id;
+                            message.Text = TextMessage;
+                            message.Sent = DateTime.Now;
+
+                            messagesRepository.Add(message);
+                            dataBase.SaveChanges();
+                        }
+
+                        ReloadMessages();
                     }));
             }
         }
@@ -154,8 +225,9 @@ namespace WpfMessenger.ViewModels
                     (_userInfo = new RelayCommand(obj =>
                     {
                         UserInfoView userInfoView = new UserInfoView(User);
-                        userInfoView.Show();
-                        Closing?.Invoke(this, EventArgs.Empty);
+                        userInfoView.ShowDialog();
+
+                        ReloadChats();
                     }));
             }
         }
@@ -174,8 +246,9 @@ namespace WpfMessenger.ViewModels
                         }
 
                         ChatSettingsView chatSettings = new ChatSettingsView(SelectedChat, User);
-                        chatSettings.Show();
-                        Closing?.Invoke(this, EventArgs.Empty);
+                        chatSettings.ShowDialog();
+
+                        ReloadChats();
                     }));
             }
         }

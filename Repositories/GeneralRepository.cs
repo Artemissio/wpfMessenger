@@ -21,7 +21,7 @@ namespace WpfMessenger.Repositories
         public abstract List<T> GetAll();
         public abstract List<T> GetAll(Expression<Func<T, bool>> predicate);
         public abstract void Add(T entity);
-        public abstract void Delete(int id);
+        public abstract void Delete(T entity);
         public abstract void Edit(T entity);
         public abstract void Save();
     }

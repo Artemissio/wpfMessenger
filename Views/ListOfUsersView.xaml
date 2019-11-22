@@ -10,7 +10,7 @@
     <Grid>
         <ListBox x:Name="ListOfContacts" Grid.Column="0" Margin="10,43,9.667,61" 
             Style="{StaticResource List}" ItemsSource="{Binding Users, UpdateSourceTrigger=PropertyChanged}" 
-                 SelectionChanged="ListOfContacts_SelectionChanged">
+                 SelectionChanged="ListOfContacts_SelectionChanged" SelectionMode="Multiple">
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <Grid>

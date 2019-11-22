@@ -136,7 +136,7 @@
     </Style>
     
     <!-- MESSAGE -->
-    <Style TargetType="ListBoxItem" x:Key="Message">
+    <Style TargetType="Grid" x:Key="Message">
         <Setter Property="MinHeight" Value="35"/>
     </Style>
     

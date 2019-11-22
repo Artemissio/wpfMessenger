@@ -33,8 +33,7 @@ namespace WpfMessenger.ViewModels
                     (_newChat = new RelayCommand(obj =>
                     {
                         NewChatView newChatView = new NewChatView(user);
-                        newChatView.Show();
-                        Closing?.Invoke(this, EventArgs.Empty);
+                        newChatView.ShowDialog();
                     }));
             }
         }
@@ -47,8 +46,7 @@ namespace WpfMessenger.ViewModels
                     (_settings = new RelayCommand(obj =>
                     {
                         UserSettingsView userSettingsView = new UserSettingsView(user);
-                        userSettingsView.Show();
-                        Closing?.Invoke(this, EventArgs.Empty);
+                        userSettingsView.ShowDialog();
                     }));
             }
         }
@@ -60,9 +58,6 @@ namespace WpfMessenger.ViewModels
                 return _back ??
                     (_back = new RelayCommand(obj =>
                     {
-                        MainView mainView = new MainView(ref user);
-                        mainView.Show();
-
                         Closing?.Invoke(this, EventArgs.Empty);                      
                     }));
             }

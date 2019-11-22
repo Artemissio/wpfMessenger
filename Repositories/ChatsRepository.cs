@@ -1,69 +1,57 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Data.Entity;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
+using WpfMessenger.DBConnection;
 using WpfMessenger.Models;
 
 namespace WpfMessenger.Repositories
 {
-    public class ChatsRepository
+    public class ChatsRepository : GeneralRepository<ChatModel>
     {
-        static ChatsRepository _repository;
+        public ChatsRepository(MainDataBase dataBase) : base(dataBase) { }
 
-        List<ChatModel> _chats;
-
-        ChatsRepository()
+        public override void Add(ChatModel entity)
         {
-            _chats = new List<ChatModel>();
+            _database.Entry(entity).State = EntityState.Added;
         }
 
-        public static ChatsRepository GetInstance()
+        public override void Delete(ChatModel entity)
         {
-            if (_repository == null)
-                _repository = new ChatsRepository();
-            return _repository;
+            _database.Entry(entity).State = EntityState.Deleted;
         }
 
-        public ChatModel GetChat(string search)
+        public override void Edit(ChatModel entity)
         {
-            return _chats.FirstOrDefault(c => c.Name == search);
+            _database.Entry(entity).State = EntityState.Modified;
         }
 
-        public ChatModel GetChat(int id)
+        public override List<ChatModel> GetAll()
         {
-            return _chats.FirstOrDefault(c => c.Id == id);
+            return _database.Chats.ToList();
         }
 
-        public void AddChat(ChatModel chat)
+        public override List<ChatModel> GetAll(Expression<Func<ChatModel, bool>> predicate)
         {
-            _chats.Add(chat);
+            return _database.Chats.Where(predicate).ToList();
+        }
+        public override ChatModel GetById(int id)
+        {
+            return _database.Chats.Find(id);
         }
 
-        public void UpdateChat(int id, string name, UserModel user)
+        public ChatModel GetById(int? id)
         {
-            ChatModel chat = _chats.FirstOrDefault(c => c.Id == id);
-
-            chat.Name = name;
-            chat.Admin = user;
+            return _database.Chats.Find(id);
         }
 
-        public void RemoveChat(ChatModel chat)
+        public override void Save()
         {
-            if (chat != null)
-                _chats.Remove(chat);
-        }
-
-        public List<ChatModel> GetChats()
-        {
-            return _chats;
-        }       
-
-        public List<ChatModel> GetChats(string name)
-        {
-            return _chats.ToList().FindAll(c => c.Name.Contains(name));
+            _database.SaveChanges();
         }
     }
 }

@@ -38,7 +38,7 @@ namespace WpfMessenger.Views
 
         private void ListOfContacts_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            newChatViewModel.SelectedUsers = ListOfContacts.SelectedItems.Cast<UserModel>().ToList();
+            newChatViewModel.SelectedUsers = new ObservableCollection<UserModel>(ListOfContacts.SelectedItems.Cast<UserModel>());
         }
     }
 }

@@ -13,7 +13,7 @@ namespace WpfMessenger.Repositories
         List<T> GetAll();
         List<T> GetAll(Expression<Func<T, bool>> predicate);
         void Add(T entity);
-        void Delete(int id);
+        void Delete(T entity);
         void Edit(T entity);
         void Save();
     }

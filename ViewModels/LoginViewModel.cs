@@ -1,6 +1,8 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Linq;
 using System.Windows;
+using WpfMessenger.DBConnection;
 using WpfMessenger.Models;
 using WpfMessenger.Repositories;
 using WpfMessenger.Validation;
@@ -25,6 +27,7 @@ namespace WpfMessenger.ViewModels
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(prop));
         }
+
         public string this[string columnName]
         {
             get
@@ -114,22 +117,25 @@ namespace WpfMessenger.ViewModels
                             return;
                         }
 
-                        UsersRepository repository = UsersRepository.GetInstance();
-
-                        UserModel user = repository.GetUser(Number, Password);
-
-                        if (user == null)
+                        using (MainDataBase dataBase = new MainDataBase())
                         {
-                            MessageBox.Show("Number or Password Are Incorrect");
-                            return;
-                        }
+                            UsersRepository userRepository = new UsersRepository(dataBase);
 
-                        MessageBox.Show($"Welcome, {user.Nickname} !", "Welcome", MessageBoxButton.OK, MessageBoxImage.Information);
+                            var user = userRepository.GetAll(u => (u.Number == Number && u.Password == Password)).FirstOrDefault();
 
-                        MainView mainView = new MainView(ref user);
-                        mainView.Show();
+                            if (user == null)
+                            {
+                                MessageBox.Show("Number or Password Are Incorrect");
+                                return;
+                            }
 
-                        Closing?.Invoke(this, EventArgs.Empty);
+                            MessageBox.Show($"Welcome, {user.Nickname} !", "Welcome", MessageBoxButton.OK, MessageBoxImage.Information);
+
+                            MainView mainView = new MainView(ref user);
+                            mainView.Show();
+
+                            Closing?.Invoke(this, EventArgs.Empty);
+                        }                       
                     }));
             }
         }
