@@ -39,7 +39,20 @@ namespace WpfMessenger.ViewModels
         ObservableCollection<UserModel> _users;
 
         private string _name;
+
+        bool isAdmin;
+
         public bool Validated = false;
+
+        public bool IsAdmin
+        {
+            get { return isAdmin; }
+            set
+            {
+                isAdmin = value;
+                OnPropertyChanged(nameof(IsAdmin));
+            }
+        }
 
         public event EventHandler Closing;
 
@@ -54,7 +67,10 @@ namespace WpfMessenger.ViewModels
                 usersRepository = new UsersRepository(dataBase);
 
                 if (_chat.AdminID == _user.Id)
+                {
                     _previousAdmin = _user;
+                    IsAdmin = true;
+                }                 
                 else
                     _previousAdmin = usersRepository.GetById(_chat.AdminID);
 
@@ -149,12 +165,6 @@ namespace WpfMessenger.ViewModels
                 return _edit ??
                     (_edit = new RelayCommand(o =>
                     {
-                        if (_chat.AdminID != _user.Id)
-                        {
-                            MessageBox.Show("You are not admin", "Warning", MessageBoxButton.OK, MessageBoxImage.Error);
-                            return;
-                        }
-
                         if (!Validated)
                         {
                             MessageBox.Show("Form Is Invalid or has empty fields", "Warning", MessageBoxButton.OK, MessageBoxImage.Error);
@@ -170,6 +180,7 @@ namespace WpfMessenger.ViewModels
                             chatRepository.Edit(_chat);
                             dataBase.SaveChanges();
                         }
+
                         MessageBox.Show("Chat Is Successfully Renamed", "Ok", MessageBoxButton.OK, MessageBoxImage.Information);
                     }));
             }
@@ -185,12 +196,6 @@ namespace WpfMessenger.ViewModels
                         if (SelectedUser == null)
                         {
                             MessageBox.Show("Choose at least one user", "Warning", MessageBoxButton.OK, MessageBoxImage.Error);
-                            return;
-                        }
-
-                        if (_chat.AdminID != _user.Id)
-                        {
-                            MessageBox.Show("You are not admin", "Warning", MessageBoxButton.OK, MessageBoxImage.Error);
                             return;
                         }
 
@@ -210,6 +215,7 @@ namespace WpfMessenger.ViewModels
                             dataBase.SaveChanges();
                         }
 
+                        IsAdmin = false;
                         MessageBox.Show($"{SelectedUser.Nickname} Is Now Admin", "Ok", MessageBoxButton.OK, MessageBoxImage.Information);
                     }));
             }
@@ -226,13 +232,7 @@ namespace WpfMessenger.ViewModels
                         {
                             MessageBox.Show("Choose at least one user", "Warning", MessageBoxButton.OK, MessageBoxImage.Error);
                             return;
-                        }
-
-                        if (_chat.AdminID != _user.Id)
-                        {
-                            MessageBox.Show("You are not admin", "Warning", MessageBoxButton.OK, MessageBoxImage.Error);
-                            return;
-                        }                       
+                        }                     
 
                         if (SelectedUser.Id == _user.Id)
                         {
@@ -267,13 +267,7 @@ namespace WpfMessenger.ViewModels
                 return _add ??
                     (_add = new RelayCommand(o =>
                     {
-                        if (_chat.AdminID != _user.Id)
-                        {
-                            MessageBox.Show("You are not admin", "Warning", MessageBoxButton.OK, MessageBoxImage.Error);
-                            return;
-                        }
-
-                        ListOfUsersView listOfUsersView = new ListOfUsersView(_chat, _user, Users.ToList());
+                        ListOfUsersView listOfUsersView = new ListOfUsersView(_chat);
                         listOfUsersView.ShowDialog();
 
                         Users = new ObservableCollection<UserModel>(GetUsersByChat(_chat));
@@ -336,11 +330,11 @@ namespace WpfMessenger.ViewModels
                 return _deleteChat ??
                     (_deleteChat = new RelayCommand(o =>
                     {
-                        if (_chat.AdminID != _user.Id)
-                        {
-                            MessageBox.Show("You are not admin", "Warning", MessageBoxButton.OK, MessageBoxImage.Error);
-                            return;
-                        }
+                        //if (_chat.AdminID != _user.Id)
+                        //{
+                        //    MessageBox.Show("You are not admin", "Warning", MessageBoxButton.OK, MessageBoxImage.Error);
+                        //    return;
+                        //}
 
                         using(MainDataBase dataBase = new MainDataBase())
                         {                 

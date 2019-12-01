@@ -22,7 +22,8 @@
             <RowDefinition Height="47"></RowDefinition>
         </Grid.RowDefinitions>
 
-        <Button x:Name="btnUserInfo" Grid.Column="0" Grid.Row="0" Background="Transparent" Command="{Binding UserInfo}">
+        <Button x:Name="btnUserInfo" Grid.Column="0" Grid.Row="0" Background="Transparent"
+                Command="{Binding UserInfo}" BorderBrush="{x:Null}">
             <Image Source="/Style/menu.png"/>
         </Button>
 
@@ -62,7 +63,8 @@
                         </Grid.ColumnDefinitions>
                         <Label Grid.Row="0" Grid.Column="0" Content="{Binding Fullname}" Foreground="#FF5B82E0"/>
                         <Label Grid.Row="0" Grid.Column="1" Content="{Binding Sent}" Foreground="White"/>
-                        <Label Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Content="{Binding Text}" Foreground="White"/>
+                        <TextBlock Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Text="{Binding Text}"
+                               Foreground="White" TextWrapping="Wrap"/>
                     </Grid>
                 </DataTemplate>
             </ListBox.ItemTemplate>
@@ -72,7 +74,8 @@
                  BorderBrush="#FF333131" Height="47" Margin="0,0,0,0" Text="{Binding TextMessage}"/>
 
         <Button x:Name="btnSend" Grid.Row="2" Grid.Column="3" Content="Send" Background="#FF5B82E0" 
-                Foreground="White" Command="{Binding SendMessage}"/>
+                Foreground="White" Command="{Binding SendMessage}" BorderBrush="{x:Null}"/>
+
         <Button x:Name="btnBack" Grid.Column="3" Grid.Row="0" Background="Transparent" 
                 BorderBrush="Transparent" Width="25" Margin="21.333,0,0.333,0" Command="{Binding Exit}">
             <Image Source="/Style/exit.png" Width="25"/>

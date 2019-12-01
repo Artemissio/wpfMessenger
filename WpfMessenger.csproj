@@ -112,7 +112,7 @@
     <Compile Include="ViewModels\NewChatViewModel.cs" />
     <Compile Include="ViewModels\RegistrationViewModel.cs" />
     <Compile Include="ViewModels\RelayCommand.cs" />
-    <Compile Include="ViewModels\UserInfoViewModel.cs" />
+    <Compile Include="Views\UserInfoViewModel.cs" />
     <Compile Include="ViewModels\UserProfileViewModel.cs" />
     <Compile Include="ViewModels\UserSettingsViewModel.cs" />
     <Compile Include="Views\ChatSettingsView.xaml.cs">

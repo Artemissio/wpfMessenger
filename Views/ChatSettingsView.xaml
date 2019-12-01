@@ -7,11 +7,15 @@
         mc:Ignorable="d"
         Title="ChatSettings" Height="310"  Width="325" ResizeMode="NoResize" Background="#FF252424" 
         WindowStartupLocation="CenterScreen">
+    <Window.Resources >
+        <BooleanToVisibilityConverter x:Key="BoolToVisibilityConverter" />
+    </Window.Resources>
     <Grid>
         <TextBox x:Name="tbChatName" Margin="10,10,87.333,0" BorderBrush="#FF2C2C2D" 
                  Text="{Binding Name, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"/>
         <Button x:Name="btnEdit" Style="{StaticResource UserInfoBtn}" Margin="227,10,0,0" Width="72" 
-                Content="EDIT" Height="25" Command="{Binding Edit}"/>
+                Content="EDIT" Height="25" Command="{Binding Edit}" 
+                Visibility="{Binding IsAdmin, Converter={StaticResource BoolToVisibilityConverter}}"/>
         <ListBox x:Name="ListOfContacts" Grid.Column="0" Margin="10,40,87.333,55.667" ItemsSource="{Binding Users}"
             Style="{StaticResource List}" SelectedItem="{Binding SelectedUser}">
             <ListBox.ItemTemplate>
@@ -32,17 +36,21 @@
                 Command="{Binding Back}">
             <Image Source="/Style/back.png"/>
         </Button>
-        <Button x:Name="btnAddMember" Style="{StaticResource UserInfoBtn}" Margin="227,130,0,0" Width="75" 
-            Content="Add" Height="25" Command="{Binding Add}"/>
-        <Button x:Name="btnRemoveMember" Style="{StaticResource UserInfoBtn}" Margin="227,100,0,0" Width="75" 
-            Content="Remove" Height="25" Command="{Binding Remove}"/>
+        <Button x:Name="btnAddMember" Style="{StaticResource UserInfoBtn}" Margin="227,100,0,0" Width="75" 
+            Content="Add" Height="25" Command="{Binding Add}" 
+               Visibility="{Binding IsAdmin, Converter={StaticResource BoolToVisibilityConverter}}"/>
+        <Button x:Name="btnRemoveMember" Style="{StaticResource UserInfoBtn}" Margin="227,70,0,0" Width="75" 
+            Content="Remove" Height="25" Command="{Binding Remove}" 
+                Visibility="{Binding IsAdmin, Converter={StaticResource BoolToVisibilityConverter}}"/>
         <Button x:Name="btnMakeAdmin" Style="{StaticResource UserInfoBtn}" Margin="227,40,0,0" Width="75" 
-            Content="Make Admin" Height="25" Command="{Binding MakeAdmin}"/>
-        <Button x:Name="btnShowProfile" Style="{StaticResource UserInfoBtn}" Margin="227,70,0,0" Width="75" 
+            Content="Make Admin" Height="25" Command="{Binding MakeAdmin}" 
+                Visibility="{Binding IsAdmin, Converter={StaticResource BoolToVisibilityConverter}}"/>
+        <Button x:Name="btnShowProfile" Style="{StaticResource UserInfoBtn}" Margin="227,160,0,0" Width="75" 
             Content="Show Profile" Height="25" Command="{Binding ShowProfile}"/>
-        <Button x:Name="btnDeleteChat" Style="{StaticResource UserInfoBtn}" Margin="227,190,0,0" Width="75" 
-            Content="Delete Chat" Height="25" Command="{Binding DeleteChat}"/>
-        <Button x:Name="btnLeaveChat" Style="{StaticResource UserInfoBtn}" Margin="227,160,0,0" Width="75" 
+        <Button x:Name="btnDeleteChat" Style="{StaticResource UserInfoBtn}" Margin="227,130,0,0" Width="75" 
+            Content="Delete Chat" Height="25" Command="{Binding DeleteChat}" 
+                Visibility="{Binding IsAdmin, Converter={StaticResource BoolToVisibilityConverter}}"/>
+        <Button x:Name="btnLeaveChat" Style="{StaticResource UserInfoBtn}" Margin="227,190,0,0" Width="75" 
             Content="Leave Chat" Height="25" Command="{Binding LeaveChat}"/>
     </Grid>
 </Window>

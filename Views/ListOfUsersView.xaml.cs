@@ -25,11 +25,11 @@ namespace WpfMessenger.Views
     {
         public ListOfUsersViewModel listOfUsersViewModel;
 
-        public ListOfUsersView(ChatModel chat, UserModel user, List<UserModel> _users)
+        public ListOfUsersView(ChatModel chat)
         {
             InitializeComponent();
 
-            listOfUsersViewModel = new ListOfUsersViewModel(chat, user, _users);
+            listOfUsersViewModel = new ListOfUsersViewModel(chat);
 
             DataContext = listOfUsersViewModel;
 
@@ -38,7 +38,7 @@ namespace WpfMessenger.Views
 
         private void ListOfContacts_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            listOfUsersViewModel.SelectedUsers = ListOfContacts.SelectedItems.Cast<UserModel>().ToList();
+            listOfUsersViewModel.SelectedUsers = new ObservableCollection<UserModel>(ListOfContacts.SelectedItems.Cast<UserModel>());
         }
     }
 }

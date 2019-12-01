@@ -47,7 +47,36 @@
                     <Setter Property="Background" Value="#FF2D53AE"/>
                 </Trigger.Setters>
             </Trigger>
+
+            <EventTrigger RoutedEvent="Loaded">
+                <EventTrigger.Actions>
+                    <BeginStoryboard>
+                        <Storyboard>
+                            <DoubleAnimation
+                                  Storyboard.TargetProperty="(Button.Opacity)"
+                                  From="1.0" To="0.5" Duration="0:0:0.5" AutoReverse="True"
+                                  RepeatBehavior="Forever" />
+                        </Storyboard>
+                    </BeginStoryboard>
+                </EventTrigger.Actions>
+            </EventTrigger>
+
+            <EventTrigger RoutedEvent="Button.MouseLeave">
+                <EventTrigger.Actions>
+                    <BeginStoryboard>
+                        <Storyboard>
+                            <DoubleAnimation
+                                Storyboard.TargetProperty="(Button.Opacity)"
+                                  From="1.0" To="0.5" Duration="0:0:0.5" AutoReverse="True"
+                                  RepeatBehavior="Forever" />
+                        </Storyboard>
+                    </BeginStoryboard>
+                </EventTrigger.Actions>
+            </EventTrigger>
+
         </ControlTemplate.Triggers>
+        
+       
     </ControlTemplate>
 
     <!-- BUTTON OK -->
@@ -66,6 +95,32 @@
                     <Setter Property="Background" Value="#FF2D53AE"/>
                 </Trigger.Setters>
             </Trigger>
+
+            <EventTrigger RoutedEvent="Button.MouseEnter">
+                <EventTrigger.Actions>
+                    <BeginStoryboard>
+                        <Storyboard>
+                            <DoubleAnimation
+                                  Storyboard.TargetProperty="(Button.Opacity)"
+                                  From="1.0" To="0.5" Duration="0:0:0.5" AutoReverse="True"
+                                  RepeatBehavior="Forever" />
+                        </Storyboard>
+                    </BeginStoryboard>
+                </EventTrigger.Actions>
+            </EventTrigger>
+
+            <EventTrigger RoutedEvent="Button.MouseLeave">
+                <EventTrigger.Actions>
+                    <BeginStoryboard>
+                        <Storyboard>
+                            <DoubleAnimation
+                  Storyboard.TargetProperty="(Button.Opacity)"
+                  To="1" Duration="0:0:0.1" />
+                        </Storyboard>
+                    </BeginStoryboard>
+                </EventTrigger.Actions>
+            </EventTrigger>
+            
         </ControlTemplate.Triggers>
     </ControlTemplate>
     
@@ -125,9 +180,7 @@
         <Setter Property="Height" Value="50"/>
         <Style.Triggers>
             <Trigger Property="IsMouseOver" Value="True">
-                <!--<Setter Property="Foreground" Value="#FF252424"/>-->
                 <Setter Property="FontWeight" Value="Bold"/>
-                <!--<Setter Property="Background" Value="White"/>-->
             </Trigger>
             <Trigger Property="IsSelected" Value="True">
                 <Setter Property="FontWeight" Value="Bold"/>
@@ -139,5 +192,39 @@
     <Style TargetType="Grid" x:Key="Message">
         <Setter Property="MinHeight" Value="35"/>
     </Style>
-    
+
+    <Style TargetType="Button" x:Key="SendMessage">
+        <Style.Setters>
+            <Setter Property="Background" Value="#FF5B82E0"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="BorderBrush" Value="{x:Null}"/>
+        </Style.Setters>
+
+        <Style.Triggers>
+        <EventTrigger RoutedEvent="Button.MouseEnter">
+            <EventTrigger.Actions>
+                <BeginStoryboard>
+                    <Storyboard>
+                        <DoubleAnimation
+                                  Storyboard.TargetProperty="(Button.Opacity)"
+                                  From="1.0" To="0.5" Duration="0:0:0.5" AutoReverse="True"
+                                  RepeatBehavior="Forever" />
+                    </Storyboard>
+                </BeginStoryboard>
+            </EventTrigger.Actions>
+        </EventTrigger>
+
+        <EventTrigger RoutedEvent="Button.MouseLeave">
+            <EventTrigger.Actions>
+                <BeginStoryboard>
+                    <Storyboard>
+                        <DoubleAnimation
+                  Storyboard.TargetProperty="(Button.Opacity)"
+                  To="1" Duration="0:0:0.1" />
+                    </Storyboard>
+                </BeginStoryboard>
+            </EventTrigger.Actions>
+        </EventTrigger>
+        </Style.Triggers>
+    </Style>
 </ResourceDictionary>

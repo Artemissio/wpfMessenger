@@ -8,7 +8,7 @@
         Title="ListOfUsers" Height="340" Width="375" Background="#FF252424" ResizeMode="NoResize"
         WindowStartupLocation="CenterScreen">
     <Grid>
-        <ListBox x:Name="ListOfContacts" Grid.Column="0" Margin="10,43,9.667,61" 
+        <ListBox x:Name="ListOfContacts" Grid.Column="0" Margin="10,10,9.333,61" 
             Style="{StaticResource List}" ItemsSource="{Binding Users, UpdateSourceTrigger=PropertyChanged}" 
                  SelectionChanged="ListOfContacts_SelectionChanged" SelectionMode="Multiple">
             <ListBox.ItemTemplate>
@@ -24,8 +24,8 @@
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>
-        <TextBox x:Name="tbSearch" Margin="10,10,10, 0" BorderBrush="#FF2C2C2D" 
-                 Text="{Binding Searh, UpdateSourceTrigger=PropertyChanged}"/>
+        <!--<TextBox x:Name="tbSearch" Margin="10,10,10, 0" BorderBrush="#FF2C2C2D" 
+                 Text="{Binding Searh, UpdateSourceTrigger=PropertyChanged}"/>-->
         <Button x:Name="btnAccept" Content="OK" Margin="313,255,9.333,9.667" Command="{Binding Accept}"
             Template="{StaticResource OkButton}"/>
         <Button x:Name="btnBack" Margin="10,251,308.333,10" Background="Transparent" 

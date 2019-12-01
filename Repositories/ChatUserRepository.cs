@@ -49,21 +49,5 @@ namespace WpfMessenger.Repositories
         {
             _database.SaveChanges();
         }
-
-        //public List<ChatUserModel> GetRestChatUsers(ChatModel chat)
-        //{
-        //    return _chat_users.Distinct().Where(i => i.ChatId != chat.Id).ToList();
-        //}
-
-        //public List<UserModel> GetRestUsersByChat(ChatModel chat)
-        //{
-        //    List<UserModel> users = new List<UserModel>();
-
-        //    foreach (ChatUserModel chatUser in GetRestChatUsers(chat))
-        //    {
-        //        users.Add(chatUser.User);
-        //    }
-        //    return users;
-        //}
     }
 }

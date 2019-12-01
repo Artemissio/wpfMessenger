@@ -24,8 +24,8 @@ namespace WpfMessenger.ViewModels
 
         private string _search;
 
-        List<ChatModel> _chats;
-        List<MessageViewModel> messageViewModels;
+        ObservableCollection<ChatModel> _chats;
+        ObservableCollection<MessageViewModel> messageViewModels;
 
         ChatsRepository chatRepository;
         ChatUserRepository chatUserRepository;
@@ -46,9 +46,9 @@ namespace WpfMessenger.ViewModels
             ReloadChats();
         }
 
-        List<ChatModel> GetChatsByUser(UserModel user)
+        ObservableCollection<ChatModel> GetChatsByUser(UserModel user)
         {
-            List<ChatModel> chats  = new List<ChatModel>();
+            ObservableCollection<ChatModel> chats = new ObservableCollection<ChatModel>();
 
             using (MainDataBase dataBase = new MainDataBase())
             {
@@ -72,7 +72,7 @@ namespace WpfMessenger.ViewModels
                 {
                     SelectedChat = Chats[0];
 
-                    MessageViewModels = new List<MessageViewModel>();
+                    MessageViewModels = new ObservableCollection<MessageViewModel>();
 
                     messagesRepository = new MessagesRepository(dataBase);
                     usersRepository = new UsersRepository(dataBase);
@@ -89,16 +89,16 @@ namespace WpfMessenger.ViewModels
                 }
             }
         }
-        void ReloadMessages()
+        void ReloadMessages(ChatModel chat)
         {
+            MessageViewModels = new ObservableCollection<MessageViewModel>();
+
             using (MainDataBase dataBase = new MainDataBase())
             {
                 messagesRepository = new MessagesRepository(dataBase);
                 usersRepository = new UsersRepository(dataBase);
 
-                MessageViewModels = new List<MessageViewModel>();
-
-                foreach (MessageModel model in messagesRepository.GetAll(i => i.ChatID == SelectedChat.Id))
+                foreach (MessageModel model in messagesRepository.GetAll(i => i.ChatID == chat.Id))
                 {
                     MessageViewModels.Add(new MessageViewModel()
                     {
@@ -113,7 +113,7 @@ namespace WpfMessenger.ViewModels
         public string ChatName { get; private set; }
         public string TextMessage { get; set; }
 
-        public List<ChatModel> Chats
+        public ObservableCollection<ChatModel> Chats
         {
             get { return _chats; }
             set
@@ -123,7 +123,7 @@ namespace WpfMessenger.ViewModels
             }
         }
 
-        public List<MessageViewModel> MessageViewModels
+        public ObservableCollection<MessageViewModel> MessageViewModels
         {
             get { return messageViewModels; }
             set
@@ -143,7 +143,8 @@ namespace WpfMessenger.ViewModels
                 {
                     ChatName = _selectedChat.Name;
 
-                    ReloadMessages();
+                    
+                    ReloadMessages(SelectedChat);
                 }
                     
                 OnPropertyChanged(nameof(SelectedChat));
@@ -157,10 +158,7 @@ namespace WpfMessenger.ViewModels
             {
                 _search = value;
                 OnPropertyChanged(nameof(Search));
-                using (MainDataBase dataBase = new MainDataBase())
-                { 
-                    Chats = GetChatsByUser(User).Where(i => i.Name.Contains(Search)).ToList();
-                }
+                Chats = new ObservableCollection<ChatModel>(GetChatsByUser(User).Where(i => i.Name.Contains(Search)));
             }
         }
 
@@ -198,7 +196,7 @@ namespace WpfMessenger.ViewModels
                             dataBase.SaveChanges();
                         }
 
-                        ReloadMessages();
+                        ReloadMessages(SelectedChat);
                     }));
             }
         }

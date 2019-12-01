@@ -15,7 +15,25 @@
         <Label Margin="91,164,0,0" Height="29" Content="{Binding Nickname}"
             Style="{StaticResource Field}" Width="216"/>
         <Image HorizontalAlignment="Left" Height="90" Margin="10,10,0,0" VerticalAlignment="Top" Width="90" 
-               Source="/Style/user_logo.png"/>
+               Source="/Style/user_logo.png" RenderTransformOrigin="0.5, 0.5">
+            <Image.Triggers>
+                <EventTrigger RoutedEvent="Loaded" >
+                    <BeginStoryboard>
+                        <Storyboard>
+                            <DoubleAnimation 
+                                Storyboard.TargetName="ImageRotation" Storyboard.TargetProperty="Angle" 
+                                From="360" To="0" Duration="0:0:5" RepeatBehavior="Forever"/>
+                        </Storyboard>
+                    </BeginStoryboard>
+                </EventTrigger>
+            </Image.Triggers>
+            <Image.RenderTransform>
+                <TransformGroup>
+                    <RotateTransform x:Name="ImageRotation"/>
+                    <ScaleTransform x:Name="ImageScaling"/>
+                </TransformGroup>
+            </Image.RenderTransform>
+        </Image>
         <Label Margin="118,37,0,0" Height="29" Content="Fullname: "
             Style="{StaticResource Field}" Width="79"/>
         <Label Margin="10,119,0,0" Height="29" Content="Number: "

@@ -21,9 +21,9 @@ namespace WpfMessenger.ViewModels
         ChatModel _chat;
         UserModel _user;
 
-        List<UserModel> _users;
-        List<UserModel> selectedUsers;
-        List<UserModel> _givenUsers;
+        ObservableCollection<UserModel> _users;
+        ObservableCollection<UserModel> selectedUsers;
+        ObservableCollection<UserModel> _givenUsers;
 
         RelayCommand _accept;
         RelayCommand _back;
@@ -32,52 +32,36 @@ namespace WpfMessenger.ViewModels
 
         public event EventHandler Closing;
 
-        public ListOfUsersViewModel(ChatModel chat, UserModel user, List<UserModel> users)
+        public ListOfUsersViewModel(ChatModel chat)
         {
             _chat = chat;
-            _user = user;
 
-            _givenUsers = users;
+            Users = new ObservableCollection<UserModel>(GetRestUsers());
+
+            selectedUsers = new ObservableCollection<UserModel>();
+        }
+
+        List<UserModel> GetRestUsers()
+        {
+            List<UserModel> restUsers = new List<UserModel>();
 
             using (MainDataBase dataBase = new MainDataBase())
             {
                 chatUserRepository = new ChatUserRepository(dataBase);
                 usersRepository = new UsersRepository(dataBase);
 
-                //List<ChatUserModel> chatUsers = chatUserRepository.GetAll(i => i.ChatId != _chat.Id).Distinct().ToList();
+                _givenUsers = new ObservableCollection<UserModel>();
 
-                //Users = new List<UserModel>();
+                List<ChatUserModel> chatUsers = chatUserRepository.GetAll(i => i.ChatId == _chat.Id);
 
-                //foreach(ChatUserModel chatUserModel in chatUsers)
-                //{
-                //    Users.Add(usersRepository.GetById((int)chatUserModel.UserId));
-                //}
+                foreach (ChatUserModel chatUser in chatUsers)
+                {
+                    _givenUsers.Add(usersRepository.GetById((int)chatUser.UserId));
+                }
 
-                Users = usersRepository.GetAll().Except(_givenUsers).ToList();
-
-                selectedUsers = new List<UserModel>();
+                return restUsers = usersRepository.GetAll().Except(_givenUsers).ToList();
             }
         }
-
-        //List<UserModel> GetOtherUsers(ChatModel chat)
-        //{
-        //    List<UserModel> users = new List<UserModel>();
-
-        //    using(MainDataBase dataBase = new MainDataBase())
-        //    {
-        //        chatUserRepository = new ChatUserRepository(dataBase);
-        //        usersRepository = new UsersRepository(dataBase);
-
-        //        foreach(ChatUserModel chatUser in chatUserRepository.GetAll(i => i.ChatId == chat.Id))
-        //        {
-        //            UserModel user = usersRepository.GetAll(i => i.Id == chatUser.UserId).Distinct().FirstOrDefault();
-        //            users.Add(user);
-        //        }
-        //    }
-
-        //    return users;
-        //}
-
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -94,11 +78,22 @@ namespace WpfMessenger.ViewModels
                 _search = value;
                 OnPropertyChanged(nameof(Search));
 
-                Users = Users.Where(i => i.Name.Contains(Search) || i.Surname.Contains(Search) || i.Nickname.Contains(Search)).ToList();
+                // does not work
+                //Users = new ObservableCollection<UserModel>(GetRestUsers().Where(i => i.Name.Contains(Search)
+                //                                                                || i.Surname.Contains(Search)
+                //                                                                || i.Nickname.Contains(Search)));
+
+
+                //Users.Where(i => i.Name.Contains(Search)
+                //                    || i.Surname.Contains(Search)
+                //                    || i.Nickname.Contains(Search));
+                //Users = new ObservableCollection<UserModel>(Users.Where(i => i.Name.Contains(Search)
+                //                                                            || i.Surname.Contains(Search)
+                //                                                            || i.Nickname.Contains(Search)));
             }
         }
 
-        public List<UserModel> Users
+        public ObservableCollection<UserModel> Users
         {
             get { return _users; }
             set
@@ -108,7 +103,7 @@ namespace WpfMessenger.ViewModels
             }
         }
 
-        public List<UserModel> SelectedUsers
+        public ObservableCollection<UserModel> SelectedUsers
         {
             get { return selectedUsers; }
             set
@@ -131,9 +126,9 @@ namespace WpfMessenger.ViewModels
                             MessageBox.Show("Choose at least one user", "Warning", MessageBoxButton.OK, MessageBoxImage.Error);
                             return;
                         }
-
                         using (MainDataBase dataBase = new MainDataBase())
                         {
+                        
                             foreach (UserModel userModel in selectedUsers)
                             {
                                 chatUserRepository = new ChatUserRepository(dataBase);

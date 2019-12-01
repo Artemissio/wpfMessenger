@@ -154,31 +154,13 @@ namespace WpfMessenger.ViewModels
                             chat.Name = Name;
                             chat.AdminID = user.Id;
 
-                            //MessageBox.Show(chat.Name + " " + chat.AdminID); // ---------
-
-                            //string chatUserResult = string.Empty;
-                            //string chatResult = string.Empty;
-
                             chatsRepository.Add(chat);
 
                             ChatUserModel chatUser = new ChatUserModel();
                             chatUser.ChatId = chat.Id;
                             chatUser.UserId = user.Id;
 
-                            //MessageBox.Show("Chat ID: " + chatUser.ChatId + " - user ID: " + chatUser.UserId); // ---------------
-
                             chatUserRepository.Add(chatUser); // added myself to ChatUsers
-
-                            //dataBase.SaveChanges();
-
-                            //chatUserResult = string.Empty;
-
-                            //foreach (ChatUserModel chatUserModel in chatUserRepository.GetAll()) // displays me
-                            //{
-                            //    chatUserResult += $"Chat ID: {chatUserModel.ChatId} - User ID: {chatUserModel.UserId}\n";
-                            //}
-
-                            //MessageBox.Show(chatUserResult);
 
                             foreach (UserModel userModel in SelectedUsers)
                             {
@@ -191,19 +173,6 @@ namespace WpfMessenger.ViewModels
 
                             dataBase.SaveChanges();
                         }
-                        //chatUserResult = string.Empty;
-
-                        //foreach (ChatUserModel chatUserModel in chatUserRepository.GetAll()) // displays all chat users (me + others)
-                        //{
-                        //    chatUserResult += $"Chat ID: {chatUserModel.ChatId} - User ID: {chatUserModel.UserId}\n";
-                        //}
-
-                        //foreach (ChatModel chatModel in chatsRepository.GetAll()) // displays all chats (1 for now)
-                        //{
-                        //    chatResult += $"Chat Name: {chatModel.Name} - Admin ID: {chatModel.AdminID}\n";
-                        //}
-
-                        //MessageBox.Show(chatResult);
 
                         MessageBox.Show("Chat Is Successfully Created", "Ok", MessageBoxButton.OK, MessageBoxImage.Information);
 

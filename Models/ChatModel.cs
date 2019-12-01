@@ -10,9 +10,6 @@ namespace WpfMessenger.Models
         public int AdminID { get; set; }
         public UserModel Admin { get; set; }
 
-        public virtual List<MessageModel> Messages { get; set; }
-        public virtual List<ChatUserModel> ChatUsers { get; set; }
-
         public ChatModel() { }
     }
 }
